@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -71,7 +73,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -84,12 +85,13 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'my-db',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': '10.0.10.51',
-        'PORT': '5432',
+        'ENGINE': 'django_yugabytedb',
+        'NAME': 'app-web',
+        'HOST': '10.10.100.90',
+        'PORT': 32006,
+        'USER': 'yugabyte',
+        'CONN_MAX_AGE': None,
+        'PASSWORD': 'yugabyte'
     }
 }
 
@@ -141,3 +143,8 @@ COMPRESS_ENABLED = True
 
 STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [],
+    'DEFAULT_PERMISSION_CLASSES': [],
+    'UNAUTHENTICATED_USER': None,
+}
