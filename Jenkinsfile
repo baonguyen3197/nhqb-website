@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'nhqb3197/nhqb-mysite:latest'
+        GITHUB_CREDENTIALS_ID = 'nhqb-website-creds'
     }
 
     stages {
