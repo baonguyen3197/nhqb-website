@@ -3,14 +3,15 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'nhqb3197/nhqb-mysite:latest'
-        GITHUB_CREDENTIALS_ID = 'nhqb-website-creds'
+        GITHUB_CREDENTIALS_ID = 'nhqb-website-creds' // Ensure this matches the ID of your GitHub credentials in Jenkins
+        DOCKER_CREDENTIALS_ID = 'dockerhub-creds'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the code from your repository
-                git 'https://github.com/baonguyen3197/nhqb-website.git'
+                // Checkout the code from your repository using the specified credentials
+                git credentialsId: "${GITHUB_CREDENTIALS_ID}", url: 'https://github.com/baonguyen3197/nhqb-website.git'
             }
         }
 
