@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'nhqb3197/nhqb-mysite:latest'
-        GITHUB_CREDENTIALS_ID = 'nhqb-website-creds' // Ensure this matches the ID of your GitHub credentials in Jenkins
+        GITHUB_CREDENTIALS_ID = 'nhqb-website' // Ensure this matches the ID of your GitHub credentials in Jenkins
         DOCKER_CREDENTIALS_ID = 'dockerhub-creds'
     }
 
