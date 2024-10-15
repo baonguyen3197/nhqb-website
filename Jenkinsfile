@@ -1,5 +1,39 @@
 pipeline {
-    agent any
+    agent {
+        kubernetes {
+            label 'kaniko'
+            defaultContainer 'jnlp'
+            yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    some-label: kaniko
+spec:
+  containers:
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:latest
+    command:
+    - cat
+    tty: true
+    volumeMounts:
+    - name: kaniko-secret
+      mountPath: /kaniko/.docker
+    - name: dockerfile-storage
+      mountPath: /workspace
+  volumes:
+  - name: kaniko-secret
+    secret:
+      secretName: regcred
+      items:
+      - key: .dockerconfigjson
+        path: config.json
+  - name: dockerfile-storage
+    persistentVolumeClaim:
+      claimName: dockerfile-claim
+"""
+        }
+    }
 
     environment {
         DOCKER_IMAGE = 'nhqb3197/nhqb-mysite:latest'
@@ -15,22 +49,17 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build and Push Docker Image with Kaniko') {
             steps {
-                script {
-                    // Build the Docker image
-                    sh 'docker build -t $DOCKER_IMAGE .'
-                }
-            }
-        }
-
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    // Log in to Docker Hub
-                    sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
-                    // Push the Docker image
-                    sh 'docker push $DOCKER_IMAGE'
+                container('kaniko') {
+                    script {
+                        // Run Kaniko to build and push the Docker image
+                        sh '''
+                        /kaniko/executor --dockerfile=/workspace/Dockerfile \
+                                         --context=dir://workspace/ \
+                                         --destination=$DOCKER_IMAGE
+                        '''
+                    }
                 }
             }
         }
