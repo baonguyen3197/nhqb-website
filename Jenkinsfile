@@ -10,6 +10,7 @@ metadata:
   labels:
     some-label: kaniko
 spec:
+  serviceAccountName: jenkins-admin
   containers:
   - name: jnlp
     image: jenkins/inbound-agent:latest
