@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: inspect-pv
+  namespace: devops-tools
+spec:
+  containers:
+  - name: busybox
+    image: busybox
+    command: ["sleep", "3600"]
+    volumeMounts:
+    - name: kaniko-storage
+      mountPath: /workspace
+  restartPolicy: Never
+  volumes:
+  - name: kaniko-storage
+    persistentVolumeClaim:
+      claimName: kaniko-pv-claim
