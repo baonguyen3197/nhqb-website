@@ -11,17 +11,26 @@ metadata:
     some-label: kaniko
 spec:
   containers:
+  - name: jnlp
+    image: jenkins/inbound-agent:4.3-4
+    args: ['$(JENKINS_SECRET)', '$(JENKINS_NAME)']
   - name: kaniko
     image: gcr.io/kaniko-project/executor:debug
     command:
-    - sleep
+    - /busybox/sh
     args:
-    - 60
+    - -c
+    - "while true; do sleep 30; done;"
     volumeMounts:
+    - name: jenkins-workspace
+      mountPath: /workspace
     - name: kaniko-secret
       mountPath: /kaniko/.docker
   restartPolicy: Never
   volumes:
+  - name: jenkins-workspace
+    hostPath:
+      path: /var/jenkins_home/workspace
   - name: kaniko-secret
     secret:
       secretName: regcred
