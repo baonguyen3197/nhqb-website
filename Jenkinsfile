@@ -3,7 +3,7 @@ pipeline {
         kubernetes {
             label 'kaniko'
             defaultContainer 'jnlp'
-            yaml """
+            yaml '''
 apiVersion: v1
 kind: Pod
 metadata:
@@ -37,7 +37,7 @@ spec:
       items:
       - key: .dockerconfigjson
         path: config.json
-"""
+'''
         }
     }
 
