@@ -12,7 +12,7 @@ metadata:
 spec:
   containers:
   - name: jnlp
-    image: jenkins/inbound-agent:4.13-4
+    image: jenkins/inbound-agent:4.10-1
     args: ['$(JENKINS_SECRET)', '$(JENKINS_NAME)']
   - name: kaniko
     image: gcr.io/kaniko-project/executor:debug
