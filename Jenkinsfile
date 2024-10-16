@@ -2,53 +2,29 @@ pipeline {
     agent {
         kubernetes {
             label 'kaniko'
-            defaultContainer 'jnlp'
             yaml '''
-apiVersion: v1
 kind: Pod
-metadata:
-  labels:
-    some-label: kaniko
 spec:
-  serviceAccountName: jenkins-admin
   containers:
-  - name: jnlp
-    image: jenkins/inbound-agent:latest
-    args: ['-url', 'http://10.10.100.90:32004/', '-workDir', '/home/jenkins/agent']
-    env:
-    - name: JENKINS_SECRET
-      valueFrom:
-        secretKeyRef:
-          name: jenkins-agent-secret
-          key: jenkins-secret
-    - name: JENKINS_AGENT_NAME
-      valueFrom:
-        secretKeyRef:
-          name: jenkins-agent-secret
-          key: jenkins-agent-name
   - name: kaniko
     image: gcr.io/kaniko-project/executor:debug
+    imagePullPolicy: Always
     command:
-    - /busybox/sh
+    - sleep
     args:
-    - -c
-    - "while true; do sleep 30; done;"
+    - 9999999
     volumeMounts:
-    - name: jenkins-workspace
-      mountPath: /workspace
-    - name: kaniko-secret
-      mountPath: /kaniko/.docker
-  restartPolicy: Never
+      - name: jenkins-docker-cfg
+        mountPath: /kaniko/.docker
   volumes:
-  - name: jenkins-workspace
-    hostPath:
-      path: /var/jenkins_home/workspace
-  - name: kaniko-secret
-    secret:
-      secretName: regcred
-      items:
-      - key: .dockerconfigjson
-        path: config.json
+  - name: jenkins-docker-cfg
+    projected:
+      sources:
+      - secret:
+          name: docker-credentials 
+          items:
+            - key: .dockerconfigjson
+              path: config.json
 '''
         }
     }
@@ -70,6 +46,11 @@ spec:
         stage('Build and Push Docker Image with Kaniko') {
             steps {
                 container('kaniko') {
+                    environment {
+                        PATH        = "/busybox:$PATH"
+                        REGISTRY    = 'index.docker.io' // Configure your own registry
+                        REPOSITORY  = 'nhqb3197/nhqb-mysite' // Configure your own repository
+                    }
                     script {
                         // Run Kaniko to build and push the Docker image
                         sh '''
