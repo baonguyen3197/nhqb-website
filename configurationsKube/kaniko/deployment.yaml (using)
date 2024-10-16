@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kaniko
+  namespace: devops-tools
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kaniko
+  template:
+    metadata:
+      labels:
+        app: kaniko
+    spec:
+      containers:
+      - name: kaniko
+        image: gcr.io/kaniko-project/executor:debug
+        imagePullPolicy: Always
+        command:
+        - sleep
+        args:
+        - "9999999"
+        volumeMounts:
+        - name: jenkins-docker-cfg
+          mountPath: /kaniko/.docker
+      volumes:
+      - name: jenkins-docker-cfg
+        projected:
+          sources:
+          - secret:
+              name: regcred
+              items:
+              - key: .dockerconfigjson
+                path: config.json
