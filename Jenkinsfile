@@ -24,9 +24,9 @@ pipeline {
                     curl -X POST ${KANIKO_SERVICE_URL}/build \
                         -H 'Content-Type: application/json' \
                         -d '{
-                            "dockerfile": "./Dockerfile",
-                            "context": "dir://workspace/",
-                            "destination": "nhqb3197/nhqb-mysite:latest"
+                            "dockerfile": "/workspace/Dockerfile",
+                            "context": "dir:///workspace/",
+                            "destination": "${DOCKER_IMAGE}"
                         }'
                     """
 
