@@ -12,8 +12,16 @@ metadata:
 spec:
   containers:
   - name: jnlp
-    image:  jenkins/inbound-agent:latest
-    args: ['$(JENKINS_SECRET)', '$(JENKINS_NAME)']
+    image: jenkins/inbound-agent:latest
+    args: ['-url', 'http://10.10.100.90:32004/', '-workDir', '/home/jenkins/agent']
+    env:
+    - name: JENKINS_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: jenkins-agent-secret
+          key: jenkins-secret
+    - name: JENKINS_AGENT_NAME
+      value: "kaniko-agent"
   - name: kaniko
     image: gcr.io/kaniko-project/executor:debug
     command:
