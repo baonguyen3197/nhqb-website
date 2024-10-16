@@ -21,7 +21,10 @@ spec:
           name: jenkins-agent-secret
           key: jenkins-secret
     - name: JENKINS_AGENT_NAME
-      value: "kaniko-agent"
+      valueFrom:
+        secretKeyRef:
+          name: jenkins-agent-secret
+          key: jenkins-agent-name
   - name: kaniko
     image: gcr.io/kaniko-project/executor:debug
     command:
