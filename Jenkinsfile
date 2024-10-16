@@ -30,9 +30,10 @@ spec:
     }
 
     environment {
-        DOCKER_IMAGE = 'nhqb3197/nhqb-mysite:latest'
+        DOCKER_IMAGE = 'index.docker.io/nhqb3197/nhqb-mysite:latest'
         GITHUB_CREDENTIALS_ID = 'nhqb-website' // Ensure this matches the ID of your GitHub credentials in Jenkins
         DOCKER_CREDENTIALS_ID = 'dockerhub-creds'
+        PATH = "/busybox:$PATH"
     }
 
     stages {
@@ -46,11 +47,6 @@ spec:
         stage('Build and Push Docker Image with Kaniko') {
             steps {
                 container('kaniko') {
-                    environment {
-                        PATH        = "/busybox:$PATH"
-                        REGISTRY    = 'index.docker.io' // Configure your own registry
-                        REPOSITORY  = 'nhqb3197/nhqb-mysite' // Configure your own repository
-                    }
                     script {
                         // Run Kaniko to build and push the Docker image
                         sh '''
