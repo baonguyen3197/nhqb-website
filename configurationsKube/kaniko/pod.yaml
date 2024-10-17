@@ -1,29 +1,22 @@
-apiVersion: v1
 kind: Pod
-metadata:
-  name: kaniko
-  namespace: devops-tools
 spec:
   containers:
   - name: kaniko
-    image: gcr.io/kaniko-project/executor:latest
-    args: [
-           "--dockerfile=/workspace/Dockerfile",
-           "--context=dir://workspace/",
-           "--destination=nhqb3197/nhqb-mysite:latest"] # replace with your Docker Hub account
+    image: gcr.io/kaniko-project/executor:debug
+    imagePullPolicy: Always
+    command:
+    - sleep
+    args:
+    - 9999999
     volumeMounts:
-    - name: kaniko-secret
-      mountPath: /kaniko/.docker
-    - name: kaniko-storage
-      mountPath: /workspace
-  restartPolicy: Never
+      - name: jenkins-docker-cfg
+        mountPath: /kaniko/.docker
   volumes:
-  - name: kaniko-secret
-    secret:
-      secretName: regcred
-      items:
-      - key: .dockerconfigjson
-        path: config.json
-  - name: kaniko-storage
-    persistentVolumeClaim:
-      claimName: kaniko-pv-claim
+  - name: jenkins-docker-cfg
+    projected:
+      sources:
+      - secret:
+          name: docker-credentials 
+          items:
+            - key: .dockerconfigjson
+              path: config.json
