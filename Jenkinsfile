@@ -14,7 +14,7 @@ spec:
     imagePullPolicy: Always
     env:
     - name: JENKINS_URL
-      value: http://10.10.100.90:32004  # Jenkins master URL with NodePort for web interface
+      value: http://10.10.100.90:32050  # Jenkins master URL with NodePort for web interface
   - name: kaniko
     image: gcr.io/kaniko-project/executor:debug
     imagePullPolicy: Always
