@@ -12,14 +12,9 @@ spec:
   - name: jnlp
     image: jenkins/inbound-agent:latest
     imagePullPolicy: Always
-    args:
-    - -url
-    - $(JENKINS_URL)
-    - -workDir
-    - /home/jenkins/agent
     env:
     - name: JENKINS_URL
-      value: http://10.10.100.90:32050
+      value: http://10.10.100.90:32004  # Jenkins master URL with NodePort for web interface
   - name: kaniko
     image: gcr.io/kaniko-project/executor:debug
     imagePullPolicy: Always
@@ -28,17 +23,11 @@ spec:
     args:
     - 9999999
     volumeMounts:
-      - name: jenkins-docker-cfg
-        mountPath: /kaniko/.docker
+      - name: workspace-volume
+        mountPath: /workspace
   volumes:
-  - name: jenkins-docker-cfg
-    projected:
-      sources:
-      - secret:
-          name: regcred
-          items:
-            - key: .dockerconfigjson
-              path: config.json
+  - name: workspace-volume
+    emptyDir: {}
 '''
         }
     }
