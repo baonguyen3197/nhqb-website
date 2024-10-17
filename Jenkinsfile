@@ -16,7 +16,7 @@ spec:
     - /home/jenkins/agent
     env:
     - name: JENKINS_URL
-      value: http://10.10.100.90:32050  # Replace with your Jenkins URL
+      value: http://10.10.100.90:32004  # Replace with your Jenkins URL
     volumeMounts:
       - name: jenkins-docker-cfg
         mountPath: /kaniko/.docker
