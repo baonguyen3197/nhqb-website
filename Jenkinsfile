@@ -6,6 +6,14 @@ pipeline {
 kind: Pod
 spec:
   containers:
+  - name: jnlp
+    image: jenkins/inbound-agent:latest
+    imagePullPolicy: Always
+    args:
+    - ${computer.jnlpmac} ${computer.name}
+    volumeMounts:
+      - name: jenkins-docker-cfg
+        mountPath: /kaniko/.docker
   - name: kaniko
     image: gcr.io/kaniko-project/executor:debug
     imagePullPolicy: Always
@@ -21,7 +29,7 @@ spec:
     projected:
       sources:
       - secret:
-          name: regcred
+          name: docker-credentials 
           items:
             - key: .dockerconfigjson
               path: config.json
