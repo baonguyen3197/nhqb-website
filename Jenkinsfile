@@ -13,10 +13,13 @@ spec:
     image: jenkins/inbound-agent:latest
     imagePullPolicy: Always
     args:
-    - ${computer.jnlpmac} ${computer.name}
+    - -url
+    - $(JENKINS_URL)
+    - -workDir
+    - /home/jenkins/agent
     env:
     - name: JENKINS_URL
-      value: http://10.10.100.90:32004  # Jenkins master URL with NodePort for web interface
+      value: http://10.10.100.90:32004
   - name: kaniko
     image: gcr.io/kaniko-project/executor:debug
     imagePullPolicy: Always
