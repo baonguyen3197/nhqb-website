@@ -64,8 +64,8 @@ spec:
                     script {
                         // Run Kaniko to build and push the Docker image
                         sh '''
-                        /kaniko/executor --dockerfile=/workspace/nhqb-website/Dockerfile \
-                                         --context=dir:///workspace/nhqb-website/ \
+                        /kaniko/executor --dockerfile=/workspace/Dockerfile \
+                                         --context=dir:///workspace \
                                          --destination=${DOCKER_IMAGE}
                         '''
                     }
