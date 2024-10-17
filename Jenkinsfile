@@ -19,10 +19,7 @@ spec:
     - /home/jenkins/agent
     env:
     - name: JENKINS_URL
-      value: http://10.10.100.90:32004
-    volumeMounts:
-      - name: jenkins-docker-cfg
-        mountPath: /kaniko/.docker
+      value: http://10.10.100.90:32004  # Jenkins master URL with NodePort for web interface
   - name: kaniko
     image: gcr.io/kaniko-project/executor:debug
     imagePullPolicy: Always
@@ -38,7 +35,7 @@ spec:
     projected:
       sources:
       - secret:
-          name: regcred 
+          name: regcred
           items:
             - key: .dockerconfigjson
               path: config.json
