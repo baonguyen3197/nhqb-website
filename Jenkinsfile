@@ -19,7 +19,7 @@ spec:
     - /home/jenkins/agent
     env:
     - name: JENKINS_URL
-      value: http://10.10.100.90:32004
+      value: http://10.10.100.90:32050
   - name: kaniko
     image: gcr.io/kaniko-project/executor:debug
     imagePullPolicy: Always
@@ -64,7 +64,7 @@ spec:
                     script {
                         // Run Kaniko to build and push the Docker image
                         sh '''
-                        /kaniko/executor --dockerfile=/workspace/Dockerfile \
+                        /kaniko/executor --dockerfile=/workspace/agent/remoting/Dockerfile \
                                          --context=dir:///workspace \
                                          --destination=${DOCKER_IMAGE}
                         '''
