@@ -13,10 +13,7 @@ spec:
     image: jenkins/inbound-agent:latest
     imagePullPolicy: Always
     args:
-    - -url
-    - $(JENKINS_URL)
-    - -workDir
-    - /home/jenkins/agent
+    - ${computer.jnlpmac} ${computer.name}
     env:
     - name: JENKINS_URL
       value: http://10.10.100.90:32004  # Jenkins master URL with NodePort for web interface
