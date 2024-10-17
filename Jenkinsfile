@@ -4,6 +4,9 @@ pipeline {
             label 'kaniko'
             yaml '''
 kind: Pod
+metadata:
+  labels:
+    app: jenkins-agent
 spec:
   containers:
   - name: jnlp
@@ -16,7 +19,7 @@ spec:
     - /home/jenkins/agent
     env:
     - name: JENKINS_URL
-      value: http://10.10.100.90:32004  # Replace with your Jenkins URL
+      value: http://10.10.100.90:32004
     volumeMounts:
       - name: jenkins-docker-cfg
         mountPath: /kaniko/.docker
