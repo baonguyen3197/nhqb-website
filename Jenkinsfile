@@ -82,48 +82,39 @@
 // }
 
 pipeline {
-
-  agent {
-    kubernetes {
-      yamlFile 'kaniko-builder.yaml'
-    }
-  }
-
-  environment {
-        APP_NAME = "nhqb-mysite"
-        RELEASE = "1.0.0"
-        DOCKER_USER = "nhqb3197"
-        DOCKER_PASS = 'Therookie97!'
-        IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
-        IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
-        /* JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN") */
-
+    agent {
+        kubernetes {
+            yamlFile 'kaniko-builder.yaml'
+        }
     }
 
-  stages {
-
-    stage("Cleanup Workspace") {
-      steps {
-        cleanWs()
-      }
+    environment {
+        DOCKER_IMAGE = 'index.docker.io/nhqb3197/nhqb-mysite:latest'
+        GITHUB_CREDENTIALS_ID = 'nhqb-website' // Ensure this matches the ID of your GitHub credentials in Jenkins
+        DOCKER_CREDENTIALS_ID = 'dockerhub-creds'
     }
 
-    stage("Checkout from SCM"){
+    stages {
+        stage("Cleanup Workspace") {
             steps {
-                git branch: 'main', credentialsId: 'github', url: 'https://github.com/baonguyen3197/nhqb-website.git'
+                cleanWs()
             }
-
         }
 
-    stage('Build & Push with Kaniko') {
-      steps {
-        container(name: 'kaniko', shell: '/busybox/sh') {
-          sh '''#!/busybox/sh
-
-            /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${IMAGE_NAME}:${IMAGE_TAG} --destination=${IMAGE_NAME}:latest
-          '''
+        stage("Checkout from SCM") {
+            steps {
+                git branch: 'main', credentialsId: "${GITHUB_CREDENTIALS_ID}", url: 'https://github.com/baonguyen3197/nhqb-website.git'
+            }
         }
-      }
+
+        stage('Build & Push with Kaniko') {
+            steps {
+                container(name: 'kaniko', shell: '/busybox/sh') {
+                    sh '''#!/busybox/sh
+                    /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${DOCKER_IMAGE}
+                    '''
+                }
+            }
+        }
     }
-  }
 }
