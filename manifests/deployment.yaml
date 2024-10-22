@@ -17,4 +17,4 @@ spec:
       - name: mediago-webapp
         image: index.docker.io/nhqb3197/nhqb-mysite:latest
         ports:
-        - containerPort: 8000
+        - containerPort: 8080
