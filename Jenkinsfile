@@ -1,86 +1,3 @@
-// pipeline {
-//     agent {
-//         kubernetes {
-//             label 'kaniko'
-//             yaml '''
-// kind: Pod
-// metadata:
-//   labels:
-//     app: jenkins-agent
-// spec:
-//   containers:
-//   - name: jnlp
-//     image: jenkins/inbound-agent:latest
-//     imagePullPolicy: Always
-//     env:
-//     - name: JENKINS_URL
-//       value: http://10.10.100.90:32050  # Jenkins master URL with NodePort for web interface
-//   - name: kaniko
-//     image: gcr.io/kaniko-project/executor:debug
-//     imagePullPolicy: Always
-//     command:
-//     - sleep
-//     args:
-//     - 9999999
-//     volumeMounts:
-//       - name: workspace-volume
-//         mountPath: /workspace
-//   volumes:
-//   - name: workspace-volume
-//     emptyDir: {}
-// '''
-//         }
-//     }
-
-//     environment {
-//         DOCKER_IMAGE = 'index.docker.io/nhqb3197/nhqb-mysite:latest'
-//         GITHUB_CREDENTIALS_ID = 'nhqb-website' // Ensure this matches the ID of your GitHub credentials in Jenkins
-//         DOCKER_CREDENTIALS_ID = 'dockerhub-creds'
-//         PATH = "/busybox:$PATH"
-//     }
-
-//     stages {
-//         stage('Checkout') {
-//             steps {
-//                 // Checkout the code from your repository using the specified credentials
-//                 git branch: 'main', credentialsId: "${GITHUB_CREDENTIALS_ID}", url: 'https://github.com/baonguyen3197/nhqb-website.git'
-//             }
-//         }
-
-//         stage('Build and Push Docker Image with Kaniko') {
-//             steps {
-//                 container('kaniko') {
-//                     script {
-//                         // Run Kaniko to build and push the Docker image
-//                         sh '''
-//                         /kaniko/executor --dockerfile=/workspace/agent/remoting/Dockerfile \
-//                                          --context=dir:///workspace \
-//                                          --destination=${DOCKER_IMAGE}
-//                         '''
-//                     }
-//                 }
-//             }
-//         }
-
-//         // Uncomment and adjust the following stage if you need to deploy the Docker container
-//         // stage('Deploy') {
-//         //     steps {
-//         //         script {
-//         //             // Deploy the Docker container (this is an example, adjust as needed)
-//         //             sh 'docker run -d -p 8000:8000 ${DOCKER_IMAGE}'
-//         //         }
-//         //     }
-//         // }
-//     }
-
-//     post {
-//         always {
-//             // Clean up Docker images to save space
-//             sh 'docker rmi ${DOCKER_IMAGE} || true'
-//         }
-//     }
-// }
-
 pipeline {
     agent {
         kubernetes {
@@ -92,6 +9,9 @@ pipeline {
         DOCKER_IMAGE = 'index.docker.io/nhqb3197/nhqb-mysite:latest'
         GITHUB_CREDENTIALS_ID = 'nhqb-website' // Ensure this matches the ID of your GitHub credentials in Jenkins
         DOCKER_CREDENTIALS_ID = 'dockerhub-creds'
+        ARGOCD_SERVER = '10.10.100.90:32007'
+        ARGOCD_APP_NAME = 'app-web'
+        ARGOCD_AUTH_TOKEN = credentials('argocd-cred')
     }
 
     stages {
@@ -113,6 +33,16 @@ pipeline {
                     sh '''#!/busybox/sh
                     /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${DOCKER_IMAGE}
                     '''
+                }
+            }
+        }
+
+        stage('Trigger ArgoCD Sync') {
+            steps {
+                script {
+                    sh """
+                    curl -s -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ${ARGOCD_AUTH_TOKEN}" -d '{"sync": true}' http://${ARGOCD_SERVER}/api/v1/applications/${ARGOCD_APP_NAME}/sync
+                    """
                 }
             }
         }

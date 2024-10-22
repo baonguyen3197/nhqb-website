@@ -13,3 +13,4 @@ npx tailwindcss -i ./static/src/input.css -o ./static/src/output.css --watch
 ## --- Migration --- ##
 
 python3 manage.py makemigrations
+python3 manage.py migrate

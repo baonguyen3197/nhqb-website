@@ -31,3 +31,6 @@ ingress-easyhaproxy:
       port: 1936
       targetPort: 1936
       nodePort: 31936
+argocd:
+  http: 8080 -> 32007
+  https: 443 -> 32443
