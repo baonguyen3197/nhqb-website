@@ -4,7 +4,7 @@ FROM python:3.8
 # Install OpenLDAP development libraries
 RUN apt-get update && apt-get install -y \
     libsasl2-dev \
-    python-dev \
+    python3-dev \
     libldap2-dev \
     libssl-dev \
     && apt-get clean \
