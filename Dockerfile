@@ -22,7 +22,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the entire application code to the container
 COPY . /app/backend
 
-# Expose port 8000 to the outside world
+# Expose port 8080 to the outside world
 EXPOSE 8080
 
 # Apply migrations to set up the database (SQLite in this case)
