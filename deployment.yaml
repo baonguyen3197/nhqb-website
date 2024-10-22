@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mediago-webapp
+  namespace: app-web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mediago-webapp
+  template:
+    metadata:
+      labels:
+        app: mediago-webapp
+    spec:
+      containers:
+      - name: mediago-webapp
+        image: index.docker.io/nhqb3197/nhqb-mysite:latest
+        ports:
+        - containerPort: 8000
