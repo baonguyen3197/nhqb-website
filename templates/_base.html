@@ -1,45 +1,46 @@
 <!-- templates/_base.html -->
 
-{% load compress %}
-{% load static %}
+{% load compress %} {% load static %}
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}MediaGo{% endblock %}</title>
+    <link
+      rel="icon"
+      href="{% static 'assets/favicon/favicon.ico' %}"
+      type="image/x-icon"
+    />
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" /> -->
 
-   <head>
-      <meta charset="UTF-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>MediaGo</title>
-      <link rel="icon" href="{% static 'assets/favicon/favicon.ico' %}" type="image/x-icon">
+    {% compress css %}
+    <link rel="stylesheet" href="{% static 'src/output.css' %}" />
+    {% endcompress %} {% block extra_css %}{% endblock %}
+  </head>
 
-      {% compress css %}
-      <link rel="stylesheet" href="{% static 'src/output.css' %}">
-      {% endcompress %}
+  <body class="bg-green-50">
+    <div class="antialiased bg-gray-50 dark:bg-gray-900">
+      <!-- Navbar -->
+      {% include 'components/base/navbar.html' %}
 
-   </head>
+      <!-- Sidebar -->
+      {% include 'components/base/sidebar.html' %}
 
-   <body class="bg-green-50">
-      <div class="antialiased bg-gray-50 dark:bg-gray-900">
-        <!-- Navbar -->
-        {% include 'components/base/navbar.html' %}
-     
-        <!-- Sidebar -->
-     
-        {% include 'components/base/sidebar.html' %}
-     
-        <main class="p-4 md:ml-64 h-auto pt-20">
-          {% block content %}
-          {% endblock content %}
-          
-          <hr class="w-48 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700">
-          
-          {% include 'components/base/footer.html' %}
-        </main>
-      </div>
-      <!-- End of new HTML -->
-      
-      <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>   
-   </body>
+      <main class="p-4 md:ml-64 h-auto pt-20">
+        {% block content %}{% endblock %}
+        <hr
+          class="w-48 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700"
+        />
+        {% include 'components/base/footer.html' %}
+      </main>
+    </div>
+    <!-- End of new HTML -->
 
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    {% block extra_js %}{% endblock %}
+  </body>
 </html>

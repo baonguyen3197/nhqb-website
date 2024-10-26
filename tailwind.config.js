@@ -3,7 +3,8 @@ module.exports = {
   content: [
     './templates/**/*.html',
     './components/**/*.html',
-    './node_modules/flowbite/**/*.js'
+    './node_modules/flowbite/**/*.js',
+    './static/**/*.js'
   ],
   theme: {
     colors: {

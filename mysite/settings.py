@@ -39,7 +39,6 @@ ALLOWED_HOSTS = [
     '10.10.100.95:32080',
 ]
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -50,8 +49,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'compressor',  # new
-    'mysite', 
+    'compressor',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'mysite',
+    'app.Users',
 ]
 
 MIDDLEWARE = [
@@ -62,6 +66,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -69,8 +74,7 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # 'DIRS': [],
-        'DIRS': [BASE_DIR / 'templates'], # new
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -98,7 +102,7 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django_yugabytedb',
-        'NAME': 'app-web',
+        'NAME': 'mediago',
         'HOST': '10.10.100.90',
         'PORT': 32006,
         'USER': 'yugabyte',
@@ -161,6 +165,8 @@ REST_FRAMEWORK = {
     'UNAUTHENTICATED_USER': None,
 }
 
+AUTH_USER_MODEL = 'Users.User'
+
 # LDAP server URI
 AUTH_LDAP_SERVER_URI = "ldap://localhost"
 
@@ -172,7 +178,7 @@ AUTH_LDAP_BIND_PASSWORD = "ubuntu"
 AUTH_LDAP_USER_SEARCH = LDAPSearch(
     "ou=users,dc=example,dc=com",
     ldap.SCOPE_SUBTREE,
-    "(uid=%(user)s)"
+    "(mail=%(user)s)"  # Adjusted search filter
 )
 
 # Group search
@@ -200,6 +206,7 @@ AUTH_LDAP_GROUP_CACHE_TIMEOUT = 3600
 
 # Authentication backends
 AUTHENTICATION_BACKENDS = [
+    # 'app.Users.backends.EmailBackend',
     'django_auth_ldap.backend.LDAPBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
@@ -209,3 +216,11 @@ import logging
 logger = logging.getLogger('django_auth_ldap')
 logger.addHandler(logging.StreamHandler())
 logger.setLevel(logging.DEBUG)
+
+# amadeus
+AMADEUS_API_KEY = 'VXc7ujBFQYmEOVLgZj14oSJKAvyaAJAd'
+AMADEUS_CLIENT_SECRET = 'gpI4IBtG5DeEOu5A'
+
+LOGIN_URL = '/users/login/'  # URL to redirect to for login
+LOGIN_REDIRECT_URL = '/users/profile/'  # URL to redirect to after login
+LOGOUT_REDIRECT_URL = '/users/login/'  # URL to redirect to after logout

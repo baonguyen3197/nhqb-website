@@ -1,55 +1,156 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>User Registration</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" />
-</head>
-<body class="bg-gray-100">
-    <div class="max-w-md mx-auto mt-10 bg-white p-8 rounded-lg shadow-lg">
-        <h2 class="text-2xl font-bold mb-6 text-gray-800">Create an Account</h2>
-        <form method="post" class="space-y-6">
-            {% csrf_token %}
-            <div class="relative z-0 w-full mb-5 group">
-                {{ form.email.label_tag }}
-                {{ form.email }}
-                {% if form.email.errors %}
-                    <div class="text-red-500 text-sm">{{ form.email.errors }}</div>
-                {% endif %}
-            </div>
-            <div class="relative z-0 w-full mb-5 group">
-                {{ form.password.label_tag }}
-                {{ form.password }}
-                {% if form.password.errors %}
-                    <div class="text-red-500 text-sm">{{ form.password.errors }}</div>
-                {% endif %}
-            </div>
-            <div class="relative z-0 w-full mb-5 group">
-                {{ form.repeat_password.label_tag }}
-                {{ form.repeat_password }}
-                {% if form.repeat_password.errors %}
-                    <div class="text-red-500 text-sm">{{ form.repeat_password.errors }}</div>
-                {% endif %}
-            </div>
-            <div class="grid md:grid-cols-2 md:gap-6">
-                <div class="relative z-0 w-full mb-5 group">
-                    {{ form.first_name.label_tag }}
-                    {{ form.first_name }}
-                    {% if form.first_name.errors %}
-                        <div class="text-red-500 text-sm">{{ form.first_name.errors }}</div>
-                    {% endif %}
-                </div>
-                <div class="relative z-0 w-full mb-5 group">
-                    {{ form.last_name.label_tag }}
-                    {{ form.last_name }}
-                    {% if form.last_name.errors %}
-                        <div class="text-red-500 text-sm">{{ form.last_name.errors }}</div>
-                    {% endif %}
-                </div>
-            </div>
-            <button type="submit" class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Create Account</button>
-        </form>
+{% extends "_base.html" %} {% block content %}
+
+<form
+  method="post"
+  class="max-w-md mx-auto mt-10 bg-white p-8 rounded-lg shadow-lg"
+>
+  <h2 class="text-2xl font-bold mb-6 text-gray-800">Create an Account</h2>
+  {% csrf_token %}
+  <div class="grid md:grid-cols-2 md:gap-6">
+    <div class="relative z-0 w-full mb-5 group">
+      {{ form.email }}
+      <label
+        for="id_email"
+        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 flex items-center"
+      >
+        <svg
+          class="w-4 h-4 text-gray-500 dark:text-gray-400"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 20 16"
+        >
+          <path
+            d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z"
+          />
+          <path
+            d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z"
+          />
+        </svg>
+        <span class="ml-2">Email address</span>
+      </label>
+      {% if form.email.errors %}
+      <div class="text-red-500 text-sm">{{ form.email.errors }}</div>
+      {% endif %}
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
-</body>
-</html>
+    <div class="relative max-w-sm mb-5 group">
+      <div
+        class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+      >
+        <svg
+          class="w-4 h-4 text-gray-500 dark:text-gray-400"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
+          />
+        </svg>
+      </div>
+      <input
+        id="datepicker-autohide"
+        datepicker
+        datepicker-autohide
+        type="text"
+        name="date_of_birth"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="Date of Birth"
+      />
+      <label
+        for="id_date_of_birth"
+        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+        >Date of Birth</label
+      >
+      {% if form.date_of_birth.errors %}
+      <div class="text-red-500 text-sm">{{ form.date_of_birth.errors }}</div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="grid md:grid-cols-2 md:gap-6">
+    <div class="relative z-0 w-full mb-5 group">
+      {{ form.first_name }}
+      <label
+        for="id_first_name"
+        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+        >First name</label
+      >
+      {% if form.first_name.errors %}
+      <div class="text-red-500 text-sm">{{ form.first_name.errors }}</div>
+      {% endif %}
+    </div>
+    <div class="relative z-0 w-full mb-5 group">
+      {{ form.last_name }}
+      <label
+        for="id_last_name"
+        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+        >Last name</label
+      >
+      {% if form.last_name.errors %}
+      <div class="text-red-500 text-sm">{{ form.last_name.errors }}</div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="relative z-0 w-full mb-5 group">
+    {{ form.username }}
+    <label
+      class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+    ></label>
+    <label
+      for="id_username"
+      class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 flex items-center"
+    >
+      <svg
+        class="w-6 h-6 text-gray-500 dark:text-white"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M12 20a7.966 7.966 0 0 1-5.002-1.756l.002.001v-.683c0-1.794 1.492-3.25 3.333-3.25h3.334c1.84 0 3.333 1.456 3.333 3.25v.683A7.966 7.966 0 0 1 12 20ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 5.5-4.44 9.963-9.932 10h-.138C6.438 21.962 2 17.5 2 12Zm10-5c-1.84 0-3.333 1.455-3.333 3.25S10.159 13.5 12 13.5c1.84 0 3.333-1.455 3.333-3.25S13.841 7 12 7Z"
+          clip-rule="evenodd"
+        />
+      </svg>
+      <span class="ml-2">Username</span>
+    </label>
+    {% if form.username.errors %}
+    <div class="text-red-500 text-sm">{{ form.username.errors }}</div>
+    {% endif %}
+  </div>
+  <div class="relative z-0 w-full mb-5 group">
+    {{ form.password }}
+    <label
+      for="id_password"
+      class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+      >Password</label
+    >
+    {% if form.password.errors %}
+    <div class="text-red-500 text-sm">{{ form.password.errors }}</div>
+    {% endif %}
+  </div>
+  <div class="relative z-0 w-full mb-5 group">
+    {{ form.repeat_password }}
+    <label
+      for="id_repeat_password"
+      class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+      >Confirm password</label
+    >
+    {% if form.repeat_password.errors %}
+    <div class="text-red-500 text-sm">{{ form.repeat_password.errors }}</div>
+    {% endif %}
+  </div>
+
+  <button
+    type="submit"
+    class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+  >
+    Create Account
+  </button>
+</form>
+
+{% endblock %}

@@ -14,3 +14,11 @@ npx tailwindcss -i ./static/src/input.css -o ./static/src/output.css --watch
 
 python3 manage.py makemigrations
 python3 manage.py migrate
+
+# if migration fails, delete the migration folder and the database file
+# then, create a new migration folder with __init__.py file
+# and run the migration commands again 
+
+## --- Creating a superuser --- ##
+
+python3 manage.py createsuperuser

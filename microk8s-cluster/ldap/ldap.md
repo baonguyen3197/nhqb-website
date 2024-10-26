@@ -52,3 +52,8 @@ nano base.ldif
     ldapmodify -Y EXTERNAL -H ldapi:/// -f update_rootpw.ldif
 ```
 
+## --- Check --- ##
+
+```bash
+     ldapsearch -x -H ldap://localhost -D "cn=admin,dc=example,dc=com" -w ubuntu -b "ou=users,dc=example,dc=com" "(uid=baonguyen3197)"
+```
