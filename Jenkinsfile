@@ -7,7 +7,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'index.docker.io/nhqb3197/nhqb-mysite:latest'
-        GITHUB_CREDENTIALS_ID = 'nhqb-website' // Ensure this matches the ID of your GitHub credentials in Jenkins
+        GITHUB_CREDENTIALS_ID = 'nhqb-website'
         DOCKER_CREDENTIALS_ID = 'dockerhub-creds'
         ARGOCD_SERVER = '10.10.100.90:32007'
         ARGOCD_APP_NAME = 'app-web'
@@ -24,6 +24,17 @@ pipeline {
         stage("Checkout from SCM") {
             steps {
                 git branch: 'main', credentialsId: "${GITHUB_CREDENTIALS_ID}", url: 'https://github.com/baonguyen3197/nhqb-website.git'
+            }
+        }
+
+        stage('Setup Python Environment') {
+            steps {
+                sh '''
+                python -m venv venv
+                . venv/bin/activate
+                pip install --upgrade pip
+                pip install -r requirements.txt
+                '''
             }
         }
 
