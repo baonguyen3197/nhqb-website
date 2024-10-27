@@ -16,5 +16,8 @@ spec:
       containers:
       - name: mediago-webapp
         image: index.docker.io/nhqb3197/nhqb-mysite:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
+      imagePullSecrets:
+      - name: dockerhub-creds
