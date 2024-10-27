@@ -167,12 +167,20 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'Users.User'
 
-# LDAP server URI
-AUTH_LDAP_SERVER_URI = "ldap://localhost"
+# # LDAP server URI
+# AUTH_LDAP_SERVER_URI = "ldap://localhost"
 
-# Bind credentials
-AUTH_LDAP_BIND_DN = "cn=admin,dc=example,dc=com"
-AUTH_LDAP_BIND_PASSWORD = "ubuntu"
+# # Bind credentials
+# AUTH_LDAP_BIND_DN = "cn=admin,dc=example,dc=com"
+# AUTH_LDAP_BIND_PASSWORD = "ubuntu"
+
+LDAP_SERVER_URI = os.getenv('LDAP_SERVER_URI', 'ldap://10.10.100.90:389')
+LDAP_BIND_DN = os.getenv('LDAP_BIND_DN', 'cn=admin,dc=example,dc=com')
+LDAP_BIND_PASSWORD = os.getenv('LDAP_BIND_PASSWORD', 'ubuntu')
+
+AUTH_LDAP_SERVER_URI = LDAP_SERVER_URI
+AUTH_LDAP_BIND_DN = LDAP_BIND_DN
+AUTH_LDAP_BIND_PASSWORD = LDAP_BIND_PASSWORD
 
 # User search
 AUTH_LDAP_USER_SEARCH = LDAPSearch(
