@@ -14,19 +14,18 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app/backend
 
 # Copy the requirements.txt file to the container
-COPY requirements.txt /app/backend
+COPY requirements.txt .
 
 # Install Python dependencies using pip
-RUN pip install --no-cache-dir -r requirements.txt
+RUN python -m venv venv && \
+    . venv/bin/activate && \
+    pip install --no-cache-dir -r requirements.txt
 
 # Copy the entire application code to the container
-COPY . /app/backend
+COPY . .
 
 # Expose port 8080 to the outside world
 EXPOSE 8080
 
-# Apply migrations to set up the database (SQLite in this case)
-RUN python manage.py makemigrations
-
 # Run the Django application
-CMD ["python", "/app/backend/manage.py", "runserver", "0.0.0.0:8080"]
+CMD ["sh", "-c", ". venv/bin/activate && python manage.py migrate && python manage.py runserver 0.0.0.0:8080"]
