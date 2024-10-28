@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = 'index.docker.io/nhqb3197/nhqb-mysite'
+        DOCKER_IMAGE = 'index.docker.io/nhqb3197/mediago-webapp'
         GITHUB_CREDENTIALS_ID = 'nhqb-website'
         DOCKER_CREDENTIALS_ID = 'dockerhub-creds'
         ARGOCD_SERVER = '10.10.100.90:32007'
@@ -32,9 +32,12 @@ pipeline {
                 script {
                     def imageTag = "${DOCKER_IMAGE}:${BUILD_NUMBER}"
                     container(name: 'kaniko', shell: '/busybox/sh') {
-                        sh '''#!/busybox/sh
-                        /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${imageTag}
-                        '''
+                        withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                            sh '''#!/busybox/sh
+                            echo "{\"auths\":{\"index.docker.io\":{\"username\":\"$DOCKER_USERNAME\",\"password\":\"$DOCKER_PASSWORD\"}}}" > /kaniko/.docker/config.json
+                            /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${imageTag}
+                            '''
+                        }
                     }
                     env.IMAGE_TAG = imageTag
                 }
