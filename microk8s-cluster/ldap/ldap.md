@@ -57,3 +57,9 @@ nano base.ldif
 ```bash
      ldapsearch -x -H ldap://localhost -D "cn=admin,dc=example,dc=com" -w ubuntu -b "ou=users,dc=example,dc=com" "(uid=baonguyen3197)"
 ```
+
+## --- Delete --- ##
+
+```bash
+    ldapdelete -x -D "cn=admin,dc=example,dc=com" -w 'ubuntu' "uid=nhqb,ou=users,dc=example,dc=com"
+```

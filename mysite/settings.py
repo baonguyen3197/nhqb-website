@@ -174,7 +174,7 @@ AUTH_USER_MODEL = 'Users.User'
 # AUTH_LDAP_BIND_DN = "cn=admin,dc=example,dc=com"
 # AUTH_LDAP_BIND_PASSWORD = "ubuntu"
 
-LDAP_SERVER_URI = os.getenv('LDAP_SERVER_URI', 'ldap://10.10.100.90:389')
+LDAP_SERVER_URI = os.getenv('LDAP_SERVER_URI', 'ldap://10.10.100.95:389')
 LDAP_BIND_DN = os.getenv('LDAP_BIND_DN', 'cn=admin,dc=example,dc=com')
 LDAP_BIND_PASSWORD = os.getenv('LDAP_BIND_PASSWORD', 'ubuntu')
 
