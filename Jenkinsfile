@@ -34,8 +34,9 @@ pipeline {
                     container(name: 'kaniko', shell: '/busybox/sh') {
                         withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                             sh '''#!/busybox/sh
+                            mkdir -p /kaniko/.docker
                             echo "{\"auths\":{\"index.docker.io\":{\"username\":\"$DOCKER_USERNAME\",\"password\":\"$DOCKER_PASSWORD\"}}}" > /kaniko/.docker/config.json
-                            /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${imageTag}
+                            /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${imageTag} --docker-cfg /kaniko/.docker
                             '''
                         }
                     }
