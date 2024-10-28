@@ -242,7 +242,7 @@ class UserForm(forms.ModelForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.set_password(self.cleaned_data["password"])
+        user.set_password(self.cleaned_data["password"])  # Use set_password to hash the password
         if commit:
             user.save()
         return user
@@ -272,7 +272,7 @@ def user_register(request):
         form = UserForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.set_password(form.cleaned_data['password'])
+            user.set_password(form.cleaned_data['password'])  # Use set_password to hash the password
             user.save()
             add_user_to_ldap(user)
             return redirect('user_success')
@@ -298,14 +298,24 @@ def delete_user(request):
     return render(request, 'includes/user/delete_user_confirm.html', {'user': user})
 
 def add_user_to_ldap(user):
-    server = Server(os.getenv('LDAP_SERVER_URI', 'ldap://10.10.100.95:389'), get_info=ALL)
+    # Directly set the LDAP server URI, bind DN, and bind password
+    ldap_server_uri = 'ldap://10.10.100.95:389'
+    ldap_bind_dn = 'cn=admin,dc=example,dc=com'
+    ldap_bind_password = 'ubuntu'
+
+    server = Server(ldap_server_uri, get_info=ALL)
     try:
-        conn = Connection(server, os.getenv('LDAP_BIND_DN', 'cn=admin,dc=example,dc=com'), os.getenv('LDAP_BIND_PASSWORD', 'your_password'), auto_bind=True)
+        conn = Connection(server, ldap_bind_dn, ldap_bind_password, auto_bind=True)
         logger.debug("LDAP connection established.")
         
         dn = f"uid={user.username},ou=users,dc=example,dc=com"
+        
+        # Hash the password using SSHA
         hashed_password = '{SSHA}' + base64.b64encode(hashlib.sha1(user.password.encode('utf-8')).digest()).decode('utf-8')
         
+        logger.debug(f"Adding user to LDAP with DN: {dn}")
+        logger.debug(f"User details: cn={user.first_name} {user.last_name}, sn={user.last_name}, uid={user.username}, mail={user.email}")
+
         conn.add(dn, ['inetOrgPerson', 'posixAccount', 'top'], {
             'cn': user.first_name + ' ' + user.last_name,
             'sn': user.last_name,
@@ -329,7 +339,7 @@ def add_user_to_ldap(user):
 def delete_user_from_ldap(user):
     server = Server('ldap://10.10.100.95:389', get_info=ALL)
     try:
-        conn = Connection(server, 'cn=admin,dc=example,dc=com', 'your_password', auto_bind=True)
+        conn = Connection(server, 'cn=admin,dc=example,dc=com', 'ubuntu', auto_bind=True)
         dn = f"uid={user.username},ou=users,dc=example,dc=com"
         conn.delete(dn)
         conn.unbind()

@@ -165,18 +165,12 @@ REST_FRAMEWORK = {
     'UNAUTHENTICATED_USER': None,
 }
 
+# LDAP settings
 AUTH_USER_MODEL = 'Users.User'
 
-# # LDAP server URI
-# AUTH_LDAP_SERVER_URI = "ldap://localhost"
-
-# # Bind credentials
-# AUTH_LDAP_BIND_DN = "cn=admin,dc=example,dc=com"
-# AUTH_LDAP_BIND_PASSWORD = "ubuntu"
-
-LDAP_SERVER_URI = os.getenv('LDAP_SERVER_URI', 'ldap://10.10.100.95:389')
-LDAP_BIND_DN = os.getenv('LDAP_BIND_DN', 'cn=admin,dc=example,dc=com')
-LDAP_BIND_PASSWORD = os.getenv('LDAP_BIND_PASSWORD', 'ubuntu')
+LDAP_SERVER_URI = 'ldap://10.10.100.95:389'
+LDAP_BIND_DN = 'cn=admin,dc=example,dc=com'
+LDAP_BIND_PASSWORD = 'ubuntu'
 
 AUTH_LDAP_SERVER_URI = LDAP_SERVER_URI
 AUTH_LDAP_BIND_DN = LDAP_BIND_DN
@@ -188,6 +182,8 @@ AUTH_LDAP_USER_SEARCH = LDAPSearch(
     ldap.SCOPE_SUBTREE,
     "(mail=%(user)s)"  # Adjusted search filter
 )
+
+AUTH_LDAP_BIND_AS_AUTHENTICATING_USER = True
 
 # Group search
 AUTH_LDAP_GROUP_SEARCH = LDAPSearch(
@@ -214,7 +210,6 @@ AUTH_LDAP_GROUP_CACHE_TIMEOUT = 3600
 
 # Authentication backends
 AUTHENTICATION_BACKENDS = [
-    # 'app.Users.backends.EmailBackend',
     'django_auth_ldap.backend.LDAPBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
