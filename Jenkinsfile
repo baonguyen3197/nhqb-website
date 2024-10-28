@@ -29,10 +29,15 @@ pipeline {
 
         stage('Build & Push with Kaniko') {
             steps {
-                container(name: 'kaniko', shell: '/busybox/sh') {
-                    sh '''#!/busybox/sh
-                    /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${DOCKER_IMAGE}
-                    '''
+                script {
+                    def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                    def imageTag = "${DOCKER_IMAGE}:${commitHash}"
+                    container(name: 'kaniko', shell: '/busybox/sh') {
+                        sh '''#!/busybox/sh
+                        /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${imageTag}
+                        '''
+                    }
+                    env.IMAGE_TAG = imageTag
                 }
             }
         }

@@ -220,14 +220,6 @@ logger = logging.getLogger('django_auth_ldap')
 logger.addHandler(logging.StreamHandler())
 logger.setLevel(logging.DEBUG)
 
-# amadeus
-AMADEUS_API_KEY = 'VXc7ujBFQYmEOVLgZj14oSJKAvyaAJAd'
-AMADEUS_CLIENT_SECRET = 'gpI4IBtG5DeEOu5A'
-
-LOGIN_URL = '/users/login/'  # URL to redirect to for login
-LOGIN_REDIRECT_URL = '/users/profile/'  # URL to redirect to after login
-LOGOUT_REDIRECT_URL = '/users/login/'  # URL to redirect to after logout
-
 # Configure logging
 LOGGING = {
     'version': 1,
@@ -242,3 +234,11 @@ LOGGING = {
         'level': 'DEBUG',
     },
 }
+
+# amadeus
+AMADEUS_API_KEY = 'VXc7ujBFQYmEOVLgZj14oSJKAvyaAJAd'
+AMADEUS_CLIENT_SECRET = 'gpI4IBtG5DeEOu5A'
+
+LOGIN_URL = '/users/login/'  # URL to redirect to for login
+LOGIN_REDIRECT_URL = '/users/profile/'  # URL to redirect to after login
+LOGOUT_REDIRECT_URL = '/users/login/'  # URL to redirect to after logout
