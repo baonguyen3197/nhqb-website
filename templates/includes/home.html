@@ -214,7 +214,8 @@
       <a
         href="#"
         class="text-blue-600 dark:text-blue-500 hover:underline font-medium text-lg inline-flex items-center"
-        >Read more about our app
+      >
+        Read more about our app
         <svg
           class="w-3.5 h-3.5 ms-2 rtl:rotate-180"
           aria-hidden="true"
@@ -250,8 +251,6 @@
             required
           />
           <label
-            for="username"
-            label
             for="username"
             class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 flex items-center"
           >
@@ -320,7 +319,7 @@
         <div class="text-sm font-medium text-gray-900 dark:text-white">
           Not registered yet?
           <a
-            href="{% url 'user_register' %}"  
+            href="{% url 'user_register' %}"
             class="text-blue-600 hover:underline dark:text-blue-500"
             >Create account</a
           >
@@ -338,11 +337,10 @@
             href="#"
             class="text-blue-600 dark:text-blue-500 cursor-not-allowed"
             aria-disabled="true"
-            tabindex="-1" 
             >Create account</a
           >
-          {% endif %}
         </div>
+        {% endif %}
       </form>
     </div>
   </div>
@@ -378,7 +376,8 @@
       <a
         href="#"
         class="text-blue-600 dark:text-blue-500 hover:underline font-medium text-lg inline-flex items-center"
-        >Read more
+      >
+        Read more
         <svg
           class="w-3.5 h-3.5 ms-2 rtl:rotate-180"
           aria-hidden="true"
@@ -431,7 +430,8 @@
       <a
         href="#"
         class="text-blue-600 dark:text-blue-500 hover:underline font-medium text-lg inline-flex items-center"
-        >Read more
+      >
+        Read more
         <svg
           class="w-3.5 h-3.5 ms-2 rtl:rotate-180"
           aria-hidden="true"
@@ -451,5 +451,4 @@
     </div>
   </div>
 </section>
-
 {% endblock content %}
