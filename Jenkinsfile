@@ -30,8 +30,7 @@ pipeline {
         stage('Build & Push with Kaniko') {
             steps {
                 script {
-                    def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    def imageTag = "${DOCKER_IMAGE}:${commitHash}"
+                    def imageTag = "${DOCKER_IMAGE}:${BUILD_NUMBER}"
                     container(name: 'kaniko', shell: '/busybox/sh') {
                         sh '''#!/busybox/sh
                         /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${imageTag}
