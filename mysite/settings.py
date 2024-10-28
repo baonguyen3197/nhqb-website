@@ -232,3 +232,18 @@ AMADEUS_CLIENT_SECRET = 'gpI4IBtG5DeEOu5A'
 LOGIN_URL = '/users/login/'  # URL to redirect to for login
 LOGIN_REDIRECT_URL = '/users/profile/'  # URL to redirect to after login
 LOGOUT_REDIRECT_URL = '/users/login/'  # URL to redirect to after logout
+
+# Configure logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}

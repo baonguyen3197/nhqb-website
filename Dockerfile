@@ -15,6 +15,7 @@ WORKDIR /app/backend
 
 # Copy the requirements.txt file to the container
 COPY requirements.txt .
+COPY static/ static/
 
 # Install Python dependencies using pip
 RUN python -m venv venv && \

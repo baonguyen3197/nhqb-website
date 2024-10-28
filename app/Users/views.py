@@ -129,24 +129,30 @@ def delete_user(request):
     return render(request, 'includes/user/delete_user_confirm.html', {'user': user})
 
 def add_user_to_ldap(user):
-    server = Server('ldap://localhost', get_info=ALL)
-    conn = Connection(server, 'cn=admin,dc=example,dc=com', 'ubuntu', auto_bind=True)
-    
-    dn = f"uid={user.username},ou=users,dc=example,dc=com"
-    hashed_password = '{SSHA}' + base64.b64encode(hashlib.sha1(user.password.encode('utf-8')).digest()).decode('utf-8')
-    
-    conn.add(dn, ['inetOrgPerson', 'posixAccount', 'top'], {
-        'cn': user.first_name + ' ' + user.last_name,
-        'sn': user.last_name,
-        'uid': user.username,
-        'mail': user.email,
-        'userPassword': hashed_password,
-        'loginShell': '/bin/bash',
-        'uidNumber': '1001',  # Ensure unique UID and GID numbers
-        'gidNumber': '1001',
-        'homeDirectory': f'/home/{user.username}'
-    })
-    conn.unbind()
+    server = Server(os.getenv('LDAP_SERVER_URI', 'ldap://10.10.100.95:389'), get_info=ALL)
+    try:
+        conn = Connection(server, 'cn=admin,dc=example,dc=com', 'ubuntu', auto_bind=True)
+        
+        dn = f"uid={user.username},ou=users,dc=example,dc=com"
+        hashed_password = '{SSHA}' + base64.b64encode(hashlib.sha1(user.password.encode('utf-8')).digest()).decode('utf-8')
+        
+        conn.add(dn, ['inetOrgPerson', 'posixAccount', 'top'], {
+            'cn': user.first_name + ' ' + user.last_name,
+            'sn': user.last_name,
+            'uid': user.username,
+            'mail': user.email,
+            'userPassword': hashed_password,
+            'loginShell': '/bin/bash',
+            'uidNumber': '1001',  # Ensure unique UID and GID numbers
+            'gidNumber': '1001',
+            'homeDirectory': f'/home/{user.username}'
+        })
+        conn.unbind()
+        logger.debug("User added to LDAP.")
+    except LDAPSocketOpenError as e:
+        logger.error(f"LDAP connection error: {e}")
+    except Exception as e:
+        logger.error(f"An error occurred: {e}")
 
 def delete_user_from_ldap(user):
     server = Server('ldap://localhost', get_info=ALL)
