@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = 'index.docker.io/nhqb3197/nhqb-mysite:latest'
+        DOCKER_IMAGE = 'index.docker.io/nhqb3197/nhqb-mysite'
         GITHUB_CREDENTIALS_ID = 'nhqb-website'
         DOCKER_CREDENTIALS_ID = 'dockerhub-creds'
         ARGOCD_SERVER = '10.10.100.90:32007'
