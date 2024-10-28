@@ -310,17 +310,38 @@
             >Lost Password?</a
           >
         </div>
+        {% if not user.is_authenticated %}
         <button
           type="submit"
-          class="w-full px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 sm:w-auto dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          class="w-full px-5 py-3 text-base font-medium text-center text-purple-700 hover:text-white border border-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-purple-400 dark:text-purple-400 dark:hover:text-white dark:hover:bg-purple-500 dark:focus:ring-purple-900"
         >
           Login to your account
         </button>
         <div class="text-sm font-medium text-gray-900 dark:text-white">
           Not registered yet?
-          <a class="text-blue-600 hover:underline dark:text-blue-500"
+          <a
+            href="{% url 'user_register' %}"  
+            class="text-blue-600 hover:underline dark:text-blue-500"
             >Create account</a
           >
+        </div>
+        {% else %}
+        <button
+          type="submit"
+          class="cursor-not-allowed w-full px-5 py-3 text-base font-medium text-center text-purple-700 hover:text-white border border-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-purple-400 dark:text-purple-400 dark:hover:text-white dark:hover:bg-purple-500 dark:focus:ring-purple-900"
+        >
+          Login to your account
+        </button>
+        <div class="text-sm font-medium text-gray-900 dark:text-white">
+          Not registered yet?
+          <a
+            href="#"
+            class="text-blue-600 dark:text-blue-500 cursor-not-allowed"
+            aria-disabled="true"
+            tabindex="-1" 
+            >Create account</a
+          >
+          {% endif %}
         </div>
       </form>
     </div>
