@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = 'index.docker.io/nhqb3197/mediago-webapp'
+        DOCKER_IMAGE = 'index.docker.io/nhqb3197/nhqb-mysite:latest'
         GITHUB_CREDENTIALS_ID = 'nhqb-website'
         DOCKER_CREDENTIALS_ID = 'dockerhub-creds'
         ARGOCD_SERVER = '10.10.100.90:32007'
@@ -26,21 +26,13 @@ pipeline {
                 git branch: 'main', credentialsId: "${GITHUB_CREDENTIALS_ID}", url: 'https://github.com/baonguyen3197/nhqb-website.git'
             }
         }
-
+        
         stage('Build & Push with Kaniko') {
             steps {
-                script {
-                    def imageTag = "${DOCKER_IMAGE}:${BUILD_NUMBER}"
-                    container(name: 'kaniko', shell: '/busybox/sh') {
-                        withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            sh '''#!/busybox/sh
-                            mkdir -p /kaniko/.docker
-                            echo "{\"auths\":{\"index.docker.io\":{\"username\":\"$DOCKER_USERNAME\",\"password\":\"$DOCKER_PASSWORD\"}}}" > /kaniko/.docker/config.json
-                            /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${imageTag}
-                            '''
-                        }
-                    }
-                    env.IMAGE_TAG = imageTag
+                container(name: 'kaniko', shell: '/busybox/sh') {
+                    sh '''#!/busybox/sh
+                    /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${DOCKER_IMAGE}
+                    '''
                 }
             }
         }
