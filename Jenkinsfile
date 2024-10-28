@@ -36,7 +36,7 @@ pipeline {
                             sh '''#!/busybox/sh
                             mkdir -p /kaniko/.docker
                             echo "{\"auths\":{\"index.docker.io\":{\"username\":\"$DOCKER_USERNAME\",\"password\":\"$DOCKER_PASSWORD\"}}}" > /kaniko/.docker/config.json
-                            /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${imageTag} --docker-cfg /kaniko/.docker
+                            /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${imageTag}
                             '''
                         }
                     }
