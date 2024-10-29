@@ -30,6 +30,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'default-secret-key')
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    '127.0.0.1',
     'localhost',
     '10.10.100.80',
     '10.10.100.80:32080',
@@ -147,6 +148,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

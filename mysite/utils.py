@@ -29,4 +29,4 @@ def get_hotel_data(city_code):
 
 # Example usage
 if __name__ == "__main__":
-    print(get_hotel_data('SGN'))
+    print(get_hotel_data('VKG'))
