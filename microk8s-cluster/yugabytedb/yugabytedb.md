@@ -30,3 +30,31 @@ microk8s kubectl exec -n yugabytedb -it yb-tserver-0 -- ysqlsh -h yb-tserver-0.y
 
     DROP DATABASE "mediago";
     CREATE DATABASE "mediago";
+
+## --- Delete table and migrate again --- ##
+
+-- Drop table
+DROP TABLE IF EXISTS <table_name>;
+
+## --- Delete migrations --- ##
+
+DELETE FROM django_migrations WHERE app = ' <app_name> ';
+
+example:
+DELETE FROM django_migrations WHERE app = 'Airports';
+
+rm -rf app/<app_name>/migrations/*
+touch app/<app_name>/migrations/__init__.py
+
+example:
+rm -rf app/Airports/migrations/*
+touch app/Airports/migrations/__init__.py
+
+## --- Migrate again --- ##
+
+python3 manage.py makemigrations <app_name>
+python3 manage.py migrate <app_name>
+
+example:
+python3 manage.py makemigrations Airports
+python3 manage.py migrate Airports
