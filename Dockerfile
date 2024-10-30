@@ -3,15 +3,15 @@ FROM python:3.8-slim as base
 
 # Install OpenLDAP development libraries and other dependencies
 RUN apt-get update && apt-get install -y \
+    ansible \
     libsasl2-dev \
     python3-dev \
     libldap2-dev \
     libssl-dev \
-    postgresql-dev \
+    libpq-dev \
     gcc \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-
 
 # Set the working directory within the container
 WORKDIR /app/backend
