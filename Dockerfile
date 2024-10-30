@@ -1,15 +1,12 @@
 # Use Python 3.8 as the base image
-FROM python:3.8-slim as base
+FROM python:3.8
 
-# Install OpenLDAP development libraries and other dependencies
+# Install OpenLDAP development libraries
 RUN apt-get update && apt-get install -y \
-    ansible \
     libsasl2-dev \
     python3-dev \
     libldap2-dev \
     libssl-dev \
-    libpq-dev \
-    gcc \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -18,6 +15,7 @@ WORKDIR /app/backend
 
 # Copy the requirements.txt file to the container
 COPY requirements.txt .
+COPY static/ static/
 
 # Install Python dependencies using pip
 RUN python -m venv venv && \
@@ -30,8 +28,5 @@ COPY . .
 # Expose port 8080 to the outside world
 EXPOSE 8080
 
-# Use ENTRYPOINT to ensure the virtual environment is activated
-ENTRYPOINT ["/bin/sh", "-c", ". venv/bin/activate && exec \"$0\" \"$@\"", "--"]
-
-# Default command to run the Django application
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8080"]
+# Run the Django application
+CMD ["sh", "-c", ". venv/bin/activate && python manage.py migrate && python manage.py runserver 0.0.0.0:8080"]
