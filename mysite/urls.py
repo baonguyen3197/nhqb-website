@@ -24,5 +24,6 @@ urlpatterns = [
     path('home/', home, name='home'),
     path('dashboard/', dashboard, name='dashboard'),
     path('users/', include('app.Users.urls')),
-    path('airports/', include('app.Airports.urls')), 
+    path('airports/', include('app.Airports.urls')),
+    path('bookings/', include('app.Bookings.urls')),
 ]

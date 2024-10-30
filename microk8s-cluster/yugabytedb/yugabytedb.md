@@ -50,6 +50,9 @@ example:
 rm -rf app/Airports/migrations/*
 touch app/Airports/migrations/__init__.py
 
+rm -rf app/Bookings/migrations/*
+touch app/Bookings/migrations/__init__.py
+
 ## --- Migrate again --- ##
 
 python3 manage.py makemigrations <app_name>
@@ -58,3 +61,13 @@ python3 manage.py migrate <app_name>
 example:
 python3 manage.py makemigrations Airports
 python3 manage.py migrate Airports
+
+python3 manage.py migrate auth --fake
+python3 manage.py migrate admin --fake
+python3 manage.py migrate contenttypes --fake
+python3 manage.py migrate sessions --fake
+python3 manage.py migrate socialaccount --fake
+python3 manage.py migrate account --fake
+python3 manage.py migrate Airports --fake
+python3 manage.py migrate Bookings --fake
+python3 manage.py migrate Users --fake

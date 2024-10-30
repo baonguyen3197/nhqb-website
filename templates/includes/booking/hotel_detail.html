@@ -1,0 +1,12 @@
+{% extends "_base.html" %}
+{% block content %}
+<h1>{{ hotel.name }}</h1>
+<p>Chain Code: {{ hotel.chain_code }}</p>
+<p>IATA Code: {{ hotel.iata_code }}</p>
+<p>Dupe ID: {{ hotel.dupe_id }}</p>
+<p>Latitude: {{ hotel.latitude }}</p>
+<p>Longitude: {{ hotel.longitude }}</p>
+<p>Country Code: {{ hotel.country_code }}</p>
+<p>Status: {{ hotel.status }}</p>
+<p>Created At: {{ hotel.created_at }}</p>
+{% endblock %}

@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'mysite',
     'app.Users',
     'app.Airports',
+    'app.Bookings',
 ]
 
 MIDDLEWARE = [
