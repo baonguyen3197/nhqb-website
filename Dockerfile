@@ -7,8 +7,11 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     libldap2-dev \
     libssl-dev \
+    postgresql-dev \
+    gcc \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
 
 # Set the working directory within the container
 WORKDIR /app/backend
