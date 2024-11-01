@@ -46,15 +46,17 @@ RUN apt-get update && apt-get install -y \
 # Set the working directory within the container
 WORKDIR /app/backend
 
-# Copy the requirements.txt file to the container
-COPY requirements.txt .
-COPY static/ static/
+# Create a virtual environment
+RUN python -m venv venv
 
-# Install Python dependencies using pip
-RUN python -m venv venv && \
-    . venv/bin/activate && \
-    pip install --no-cache-dir -r requirements.txt
+# Activate the virtual environment and install urllib3 version 1.25.11 first
+RUN . venv/bin/activate && pip install urllib3==1.25.11
 
+# Install the other dependencies
+RUN . venv/bin/activate && pip install --no-cache-dir -r requirements.txt
+
+# Update urllib3 to version 2.2.3
+RUN . venv/bin/activate && pip install --upgrade urllib3
 # Copy the entire application code to the container
 COPY . .
 
