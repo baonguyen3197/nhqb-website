@@ -69,4 +69,4 @@ requests-cache
 retry-requests 
 numpy 
 pandas
-urllib3
+urllib3=2.2.3
