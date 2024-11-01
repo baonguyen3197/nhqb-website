@@ -2,6 +2,7 @@ from django.db import models
 from app.Airports.models import Airport  # Adjust the import based on your project structure
 from django.conf import settings
 from datetime import datetime
+import uuid
 
 class Hotel(models.Model):
     dupe_id = models.IntegerField(primary_key=True)  # Use dupeId as the primary key
@@ -28,10 +29,13 @@ class Hotel(models.Model):
         self.save()
 
 class Booking(models.Model):
-    hotel = models.ForeignKey(Hotel, related_name='bookings', on_delete=models.CASCADE)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    hotel = models.ForeignKey(Hotel, related_name='bookings', on_delete=models.CASCADE)
     start_date = models.DateField()
     end_date = models.DateField()
+    destination = models.CharField(max_length=255)  # Increase max_length to accommodate existing data
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.user} booking at {self.hotel} from {self.start_date} to {self.end_date}"

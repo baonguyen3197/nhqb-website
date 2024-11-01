@@ -1,0 +1,285 @@
+{% extends "_base.html" %} {% load static %} {% block content %}
+<ol
+  class="flex items-center w-full p-3 space-x-2 text-sm font-medium text-center text-gray-500 bg-white border border-gray-200 rounded-lg shadow-sm dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4 rtl:space-x-reverse"
+>
+  <li class="flex items-center text-blue-600 dark:text-blue-500">
+    <a href="{% url 'book_hotel_step1' %}" class="flex items-center">
+      <span
+        class="flex items-center justify-center w-5 h-5 me-2 text-xs border border-blue-600 rounded-full shrink-0 dark:border-blue-500"
+      >
+        1
+      </span>
+      Choose <span class="hidden sm:inline-flex sm:ms-2">date</span>
+    </a>
+    <svg
+      class="w-3 h-3 ms-2 sm:ms-4 rtl:rotate-180"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 12 10"
+    >
+      <path
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="m7 9 4-4-4-4M1 9l4-4-4-4"
+      />
+    </svg>
+  </li>
+  <li class="flex items-center">
+    <a href="{% url 'book_hotel_step2' %}" class="flex items-center">
+      <span
+        class="flex items-center justify-center w-5 h-5 me-2 text-xs border border-gray-500 rounded-full shrink-0 dark:border-gray-400"
+      >
+        2
+      </span>
+      Select <span class="hidden sm:inline-flex sm:ms-2">hotel</span>
+    </a>
+    <svg
+      class="w-3 h-3 ms-2 sm:ms-4 rtl:rotate-180"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 12 10"
+    >
+      <path
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="m7 9 4-4-4-4M1 9l4-4-4-4"
+      />
+    </svg>
+  </li>
+  <li class="flex items-center">
+    <a href="{% url 'book_hotel_step3' %}" class="flex items-center">
+      <span
+        class="flex items-center justify-center w-5 h-5 me-2 text-xs border border-gray-500 rounded-full shrink-0 dark:border-gray-400"
+      >
+        3
+      </span>
+      Review
+    </a>
+  </li>
+  <li class="flex items-center">
+    <a href="{% url 'book_hotel_step4' %}" class="flex items-center">
+      <span
+        class="flex items-center justify-center w-5 h-5 me-2 text-xs border border-gray-500 rounded-full shrink-0 dark:border-gray-400"
+      >
+        4
+      </span>
+      Complete
+    </a>
+  </li>
+</ol>
+{% if error %}
+<div
+  class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+  role="alert"
+>
+  <strong class="font-bold">Error:</strong>
+  <span class="block sm:inline">{{ error }}</span>
+</div>
+{% endif %}
+<form method="post" class="space-y-4">
+  {% csrf_token %}
+  <div class="flex items-center space-x-4">
+    <div class="relative">
+      <div
+        class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+      >
+        <svg
+          class="w-4 h-4 text-gray-500 dark:text-gray-400"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
+          />
+        </svg>
+      </div>
+      <input
+        id="datepicker-range-start"
+        name="start_date"
+        type="text"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="Select date start"
+      />
+    </div>
+    <span class="mx-4 text-gray-500">to</span>
+    <div class="relative">
+      <div
+        class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+      >
+        <svg
+          class="w-4 h-4 text-gray-500 dark:text-gray-400"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
+          />
+        </svg>
+      </div>
+      <input
+        id="datepicker-range-end"
+        name="end_date"
+        type="text"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="Select date end"
+      />
+    </div>
+    <label
+      for="destination"
+      class="block text-sm font-medium text-gray-700 dark:text-gray-400"
+      >Destination:</label
+    >
+    <select
+      id="destination"
+      name="destination"
+      required
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      style="width: 200px"
+    >
+      {% for iata_code in iata_codes %}
+      <option value="{{ iata_code }}">{{ iata_code }}</option>
+      {% endfor %}
+    </select>
+    <button
+      type="submit"
+      class="text-purple-700 hover:text-white border border-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-purple-400 dark:text-purple-400 dark:hover:text-white dark:hover:bg-purple-500 dark:focus:ring-purple-900"
+    >
+      Next
+    </button>
+  </div>
+</form>
+<div class="flex justify-center mt-6">
+  <table
+    id="filter-table"
+    class="min-w-full max-w-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg"
+  >
+    <caption
+      class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800"
+    >
+      <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
+        Checking detailed information for IATA code
+      </p>
+    </caption>
+    <thead>
+      <tr>
+        <th class="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
+          <span class="flex items-center">
+            IATA Code
+            <svg
+              class="w-4 h-4 ms-1"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m8 15 4 4 4-4m0-6-4-4-4 4"
+              />
+            </svg>
+          </span>
+        </th>
+        <th class="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
+          <span class="flex items-center">
+            Location
+            <svg
+              class="w-4 h-4 ms-1"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m8 15 4 4 4-4m0-6-4-4-4 4"
+              />
+            </svg>
+          </span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for airport in airports %}
+      <tr class="border-b border-gray-200 dark:border-gray-700">
+        <td
+          class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        >
+          {{ airport.iata }}
+        </td>
+        <td class="px-4 py-2 text-gray-900 whitespace-nowrap dark:text-white">
+          {{ airport.location }}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"
+  type="text/javascript"
+></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    flatpickr("#datepicker-range-start", {
+      dateFormat: "Y-m-d",
+      minDate: "today",
+      onChange: function (selectedDates, dateStr, instance) {
+        const endDatePicker = document.getElementById(
+          "datepicker-range-end"
+        )._flatpickr;
+        endDatePicker.set("minDate", dateStr);
+      },
+    });
+    flatpickr("#datepicker-range-end", {
+      dateFormat: "Y-m-d",
+      minDate: "today",
+      onChange: function (selectedDates, dateStr, instance) {
+        const startDatePicker = document.getElementById(
+          "datepicker-range-start"
+        )._flatpickr;
+        if (dateStr === startDatePicker.input.value) {
+          instance.clear();
+          alert("End date cannot be the same as the start date.");
+        }
+      },
+    });
+
+    if (
+      document.getElementById("filter-table") &&
+      typeof simpleDatatables.DataTable !== "undefined"
+    ) {
+      const dataTable = new simpleDatatables.DataTable("#filter-table", {
+        searchable: false,
+        fixedHeight: true,
+        perPage: 5,
+        perPageSelect: false, // Hide the entries select dropdown
+      });
+    }
+  });
+</script>
+{% endblock %}

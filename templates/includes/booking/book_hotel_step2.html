@@ -1,0 +1,254 @@
+{% extends "_base.html" %} {% load static %} {% block content %}
+<ol
+  class="flex items-center w-full p-3 space-x-2 text-sm font-medium text-center text-gray-500 bg-white border border-gray-200 rounded-lg shadow-sm dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4 rtl:space-x-reverse"
+>
+  <li class="flex items-center text-blue-600 dark:text-blue-500">
+    <a href="{% url 'book_hotel_step1' %}" class="flex items-center">
+      <span
+        class="flex items-center justify-center w-5 h-5 me-2 text-xs border border-blue-600 rounded-full shrink-0 dark:border-blue-500"
+      >
+        1
+      </span>
+      Choose <span class="hidden sm:inline-flex sm:ms-2">date</span>
+    </a>
+    <svg
+      class="w-3 h-3 ms-2 sm:ms-4 rtl:rotate-180"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 12 10"
+    >
+      <path
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="m7 9 4-4-4-4M1 9l4-4-4-4"
+      />
+    </svg>
+  </li>
+  <li class="flex items-center text-blue-600 dark:text-blue-500">
+    <a href="{% url 'book_hotel_step2' %}" class="flex items-center">
+      <span
+        class="flex items-center justify-center w-5 h-5 me-2 text-xs border border-blue-600 rounded-full shrink-0 dark:border-blue-500"
+      >
+        2
+      </span>
+      Select <span class="hidden sm:inline-flex sm:ms-2">hotel</span>
+    </a>
+    <svg
+      class="w-3 h-3 ms-2 sm:ms-4 rtl:rotate-180"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 12 10"
+    >
+      <path
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="m7 9 4-4-4-4M1 9l4-4-4-4"
+      />
+    </svg>
+  </li>
+  <li class="flex items-center">
+    <span class="flex items-center">
+      <span
+        class="flex items-center justify-center w-5 h-5 me-2 text-xs border border-gray-500 rounded-full shrink-0 dark:border-gray-400"
+      >
+        3
+      </span>
+      Review
+    </span>
+  </li>
+  <li class="flex items-center">
+    <span class="flex items-center">
+      <span
+        class="flex items-center justify-center w-5 h-5 me-2 text-xs border border-gray-500 rounded-full shrink-0 dark:border-gray-400"
+      >
+        4
+      </span>
+      Complete
+    </span>
+  </li>
+</ol>
+<form method="post" class="space-y-4 mt-6">
+  {% csrf_token %}
+  <div class="flex items-center space-x-4 mb-4">
+    <div class="flex-grow">
+      <label
+        for="hotel_id"
+        class="block text-sm font-medium text-gray-700 dark:text-gray-400"
+        >Select Hotel:</label
+      >
+      <select
+        id="hotel_id"
+        name="hotel_id"
+        required
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      >
+        <option value="" disabled selected>Select a hotel</option>
+        {% for hotel in hotel_list %}
+        <option
+          value="{{ hotel.pk }}"
+          data-latitude="{{ hotel.latitude }}"
+          data-longitude="{{ hotel.longitude }}"
+        >
+          {{ hotel.name }}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+    <button
+      type="submit"
+      class="self-end text-purple-700 hover:text-white border border-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2 dark:border-purple-400 dark:text-purple-400 dark:hover:text-white dark:hover:bg-purple-500 dark:focus:ring-purple-900"
+    >
+      Next
+    </button>
+  </div>
+</form>
+
+<div id="line-chart" class="mt-6"></div>
+<div id="weather-message" class="mt-6"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const hotelSelect = document.getElementById("hotel_id");
+    const chartContainer = document.getElementById("line-chart");
+    const weatherMessageContainer = document.getElementById("weather-message");
+
+    hotelSelect.addEventListener("change", function () {
+      const selectedOption = hotelSelect.options[hotelSelect.selectedIndex];
+      const latitude = selectedOption.getAttribute("data-latitude");
+      const longitude = selectedOption.getAttribute("data-longitude");
+      const startDate = "{{ request.session.start_date }}";
+      const endDate = "{{ request.session.end_date }}";
+
+      fetchWeatherData(latitude, longitude, startDate, endDate);
+    });
+
+    function fetchWeatherData(latitude, longitude, startDate, endDate) {
+      fetch(
+        `?latitude=${latitude}&longitude=${longitude}&start_date=${startDate}&end_date=${endDate}`,
+        {
+          headers: {
+            "X-Requested-With": "XMLHttpRequest",
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.error) {
+            showWeatherMessage(data.error);
+          } else {
+            renderChart(data, startDate, endDate);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching weather data:", error);
+        });
+    }
+
+    function showWeatherMessage(message) {
+      weatherMessageContainer.innerHTML = `<p class="text-red-500">${message}</p>`;
+      chartContainer.innerHTML = ""; // Clear previous chart
+    }
+
+    function renderChart(data, startDate, endDate) {
+      weatherMessageContainer.innerHTML = ""; // Clear previous message
+
+      const availableStartDate = new Date(data.date[0]);
+      const availableEndDate = new Date(data.date[data.date.length - 1]);
+      const bookingStartDate = new Date(startDate);
+      const bookingEndDate = new Date(endDate);
+
+      let message = "";
+      if (
+        bookingStartDate <= availableEndDate &&
+        bookingEndDate >= availableStartDate
+      ) {
+        if (bookingEndDate > availableEndDate) {
+          message = `The weather from your booking date ${startDate} to ${
+            availableEndDate.toISOString().split("T")[0]
+          } will be shown and continue to update daily.`;
+        } else {
+          message = `The weather from your booking date ${startDate} to ${endDate} will be shown.`;
+        }
+      } else {
+        message = "Weather data is only available for the next 7 days.";
+      }
+
+      weatherMessageContainer.innerHTML = `<p class="text-green-500">${message}</p>`;
+
+      const options = {
+        chart: {
+          height: 400,
+          type: "line",
+          fontFamily: "Inter, sans-serif",
+          dropShadow: {
+            enabled: false,
+          },
+          toolbar: {
+            show: false,
+          },
+        },
+        series: [
+          {
+            name: "Max Temperature",
+            data: data.temperature_2m_max.map(Number),
+            color: "#FF5733",
+          },
+          {
+            name: "Min Temperature",
+            data: data.temperature_2m_min.map(Number),
+            color: "#33A4FF",
+          },
+          {
+            name: "Apparent Max Temperature",
+            data: data.apparent_temperature_max.map(Number),
+            color: "#FF8C00",
+          },
+          {
+            name: "Apparent Min Temperature",
+            data: data.apparent_temperature_min.map(Number),
+            color: "#1E90FF",
+          },
+          {
+            name: "UV Index Max",
+            data: data.uv_index_max.map(Number),
+            color: "#FFD700",
+          },
+          {
+            name: "UV Index Clear Sky Max",
+            data: data.uv_index_clear_sky_max.map(Number),
+            color: "#FF4500",
+          },
+        ],
+        xaxis: {
+          categories: data.date,
+          labels: {
+            show: true,
+            style: {
+              fontFamily: "Inter, sans-serif",
+              cssClass: "text-xs font-normal fill-gray-500 dark:fill-gray-400",
+            },
+          },
+        },
+        yaxis: {
+          title: {
+            text: "Values",
+          },
+        },
+      };
+
+      if (chartContainer) {
+        chartContainer.innerHTML = ""; // Clear previous chart
+        const chart = new ApexCharts(chartContainer, options);
+        chart.render();
+      }
+    }
+  });
+</script>
+{% endblock %}

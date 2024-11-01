@@ -1,6 +1,4 @@
-{% extends "_base.html" %}
-
-{% block content %}
+{% extends "_base.html" %} {% block content %}
 <!doctype html>
 <html>
   <head>
@@ -16,15 +14,19 @@
     >
       <div class="flex flex-col items-center pb-10 mt-5">
         {% if user.avatar_img %}
-          <img
-            class="w-24 h-24 mb-3 rounded-full shadow-lg"
-            src="{{ user.avatar_img }}"
-            alt="{{ user.username }} image"
-          />
+        <img
+          class="w-24 h-24 mb-3 rounded-full shadow-lg"
+          src="{{ user.avatar_img }}"
+          alt="{{ user.username }} image"
+        />
         {% else %}
-          <div class="relative inline-flex items-center justify-center w-24 h-24 mb-3 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-            <span class="text-3xl font-medium text-gray-600 dark:text-gray-300">{{ user.get_initials }}</span>
-          </div>
+        <div
+          class="relative inline-flex items-center justify-center w-24 h-24 mb-3 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600"
+        >
+          <span class="text-3xl font-medium text-gray-600 dark:text-gray-300"
+            >{{ user.get_initials }}</span
+          >
+        </div>
         {% endif %}
         <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">
           {{ user.username }}
@@ -54,7 +56,4 @@
         </div>
       </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
-  </body>
-</html>
 {% endblock %}

@@ -16,6 +16,7 @@ from ldap3 import Server, Connection, ALL
 from ldap3.core.exceptions import LDAPBindError, LDAPSocketOpenError
 import hashlib
 import base64
+from app.Bookings.models import Booking, Hotel 
 
 logger = logging.getLogger(__name__)
 
@@ -142,6 +143,41 @@ def user_success(request):
 @login_required
 def user_profile(request):
     return render(request, 'includes/user/user_profile.html', {'user': request.user})
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from app.Bookings.models import Booking, Hotel  # Correct import path for the Booking and Hotel models
+from django.core.paginator import Paginator
+
+@login_required
+def user_profile(request):
+    user = request.user
+    return render(request, 'includes/user/user_profile.html', {'user': user})
+
+@login_required
+def booking_history(request):
+    user = request.user
+    bookings = Booking.objects.filter(user_id=user.id).select_related('hotel').order_by('-start_date')
+
+    current_date = timezone.now().date()
+    for booking in bookings:
+        if booking.end_date < current_date:
+            booking.status = 'Expired'
+        elif booking.start_date > current_date:
+            booking.status = 'Upcoming'
+        else:
+            booking.status = 'Ongoing'
+
+    paginator = Paginator(bookings, 10)  # Show 10 bookings per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'page_obj': page_obj,
+    }
+
+    return render(request, 'includes/booking/booking_history.html', context)
 
 @login_required
 def delete_user(request):
