@@ -71,3 +71,7 @@ python3 manage.py migrate account --fake
 python3 manage.py migrate Airports --fake
 python3 manage.py migrate Bookings --fake
 python3 manage.py migrate Users --fake
+
+UPDATE "Users_user"
+SET "isLogin" = false
+WHERE "id" = '9a939b77-787b-4ebb-a15a-8425feae7882';
