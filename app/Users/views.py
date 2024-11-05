@@ -142,7 +142,8 @@ def user_success(request):
 
 @login_required
 def user_profile(request):
-    return render(request, 'includes/user/user_profile.html', {'user': request.user})
+    user_id = request.session.get('_auth_user_id')
+    return render(request, 'includes/user/user_profile.html', {'user': request.user}, {'user_id': user_id})
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required

@@ -14,8 +14,7 @@ def index(request):
     return render(request, 'includes/home.html')
 
 def home(request):
-    user_id = request.session.get('_auth_user_id')
-    return render(request, 'includes/home.html', {'user_id': user_id})
+    return render(request, 'includes/home.html')
 
 def user_logout(request):
     logout(request)
