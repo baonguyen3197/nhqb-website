@@ -248,3 +248,16 @@ AMADEUS_CLIENT_SECRET = 'gpI4IBtG5DeEOu5A'
 LOGIN_URL = '/users/login/'  # URL to redirect to for login
 LOGIN_REDIRECT_URL = '/users/profile/'  # URL to redirect to after login
 LOGOUT_REDIRECT_URL = '/users/login/'  # URL to redirect to after logout
+
+# Users Session
+# Use secure cookies for sessions
+SESSION_COOKIE_SECURE = True
+
+# Prevent JavaScript from accessing the session cookie
+SESSION_COOKIE_HTTPONLY = True
+
+# Expire the session when the user closes the browser
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# Set the age of session cookies, in seconds
+SESSION_COOKIE_AGE = 1209600  # 2 weeks

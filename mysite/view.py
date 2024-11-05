@@ -14,7 +14,12 @@ def index(request):
     return render(request, 'includes/home.html')
 
 def home(request):
-    return render(request, 'includes/home.html')
+    user_id = request.session.get('_auth_user_id')
+    return render(request, 'includes/home.html', {'user_id': user_id})
+
+def user_logout(request):
+    logout(request)
+    return redirect('login')
 
 # Setup the Open-Meteo API client with cache and retry on error
 cache_session = requests_cache.CachedSession('.cache', expire_after=3600)
@@ -64,16 +69,6 @@ def fetch_weather_data(latitude, longitude):
     daily_data_json = json.dumps(daily_data)  # Serialize data to JSON
 
     return daily_data, daily_data_json
-
-# def dashboard(request):
-#     latitude = 10.823
-#     longitude = 106.6296
-#     daily_data, daily_data_json = fetch_weather_data(latitude, longitude)
-#     print("Daily Data:", daily_data_json)  # Debugging: Print the data to the console
-#     return render(request, 'includes/dashboard.html', {
-#         'daily_data': daily_data,
-#         'daily_data_json': daily_data_json
-#     })
 
 def dashboard(request):
     hotels = Hotel.objects.all()  # Fetch all hotels from the database

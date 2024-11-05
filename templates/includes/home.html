@@ -434,4 +434,15 @@
     </div>
   </div>
 </section>
+
+<h1>Welcome to the Home Page</h1>
+    <p>User ID: {{ user_id }}</p>
+
+    <script>
+        // Pass the user_id from Django to JavaScript
+        const userId = "{{ user_id }}";
+
+        // Log the user_id to the console
+        console.log("User ID:", userId);
+    </script>
 {% endblock content %}
