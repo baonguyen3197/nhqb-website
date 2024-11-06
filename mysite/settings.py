@@ -299,14 +299,22 @@ LOGIN_REDIRECT_URL = '/users/profile/'  # URL to redirect to after login
 LOGOUT_REDIRECT_URL = '/users/login/'  # URL to redirect to after logout
 
 # Users Session
-# Use secure cookies for sessions
-SESSION_COOKIE_SECURE = True
+# Use database-backed sessions
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
-# Prevent JavaScript from accessing the session cookie
+# Ensure that the session cookie is secure and HTTP-only
+SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_HTTPONLY = True
 
-# Expire the session when the user closes the browser
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+# Set the session cookie age (e.g., 2 weeks)
+SESSION_COOKIE_AGE = 1209600
 
-# Set the age of session cookies, in seconds
-SESSION_COOKIE_AGE = 1209600  # 2 weeks
+# Set the session cookie name
+SESSION_COOKIE_NAME = 'myapp_sessionid'
+
+# Ensure that the CSRF cookie is secure and HTTP-only
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
+
+# Set the CSRF cookie name
+CSRF_COOKIE_NAME = 'myapp_csrftoken'
