@@ -5,6 +5,7 @@ import pandas as pd
 import requests_cache
 import requests
 from app.Bookings.models import Hotel
+from app.Airports.models import Airport
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 from retry_requests import retry
@@ -69,31 +70,60 @@ def fetch_weather_data(latitude, longitude):
 
     return daily_data, daily_data_json
 
+# def dashboard(request):
+#     hotels = Hotel.objects.all()  # Fetch all hotels from the database
+#     selected_hotel_name = "Ho Chi Minh City"  # Default location name
+
+#     if request.method == "POST":
+#         hotel_id = request.POST.get("hotel")
+#         if hotel_id:
+#             selected_hotel = Hotel.objects.get(dupe_id=hotel_id)
+#             latitude = selected_hotel.latitude
+#             longitude = selected_hotel.longitude
+#             selected_hotel_name = selected_hotel.name
+#         else:
+#             # Handle the case where no hotel is selected
+#             latitude = 10.823
+#             longitude = 106.6296
+#     else:
+#         # Default coordinates
+#         latitude = 10.823
+#         longitude = 106.6296
+
+#     daily_data, daily_data_json = fetch_weather_data(latitude, longitude)
+#     print("Daily Data:", daily_data_json)  # Debugging: Print the data to the console
+#     return render(request, 'includes/dashboard.html', {
+#         'hotels': hotels,
+#         'daily_data': daily_data,
+#         'daily_data_json': daily_data_json,
+#         'selected_hotel_name': selected_hotel_name
+#     })
+
 def dashboard(request):
-    hotels = Hotel.objects.all()  # Fetch all hotels from the database
-    selected_hotel_name = "Default Location"  # Default location name
+    airports = Airport.objects.all()  # Fetch all airports from the database
+    selected_airport_name = "Tan Binh district, Ho Chi Minh City"  # Default location name
 
     if request.method == "POST":
-        hotel_id = request.POST.get("hotel")
-        if hotel_id:
-            selected_hotel = Hotel.objects.get(dupe_id=hotel_id)
-            latitude = selected_hotel.latitude
-            longitude = selected_hotel.longitude
-            selected_hotel_name = selected_hotel.name
+        airport_id = request.POST.get("airport")
+        if airport_id:
+            selected_airport = Airport.objects.get(iata=airport_id)
+            latitude = selected_airport.latitude
+            longitude = selected_airport.longitude
+            selected_airport_name = selected_airport.location
         else:
-            # Handle the case where no hotel is selected
-            latitude = 10.823
-            longitude = 106.6296
+            # Handle the case where no airport is selected
+            latitude = 10.818889
+            longitude = 106.651944
     else:
         # Default coordinates
-        latitude = 10.823
-        longitude = 106.6296
+        latitude = 10.818889
+        longitude = 106.651944
 
     daily_data, daily_data_json = fetch_weather_data(latitude, longitude)
     print("Daily Data:", daily_data_json)  # Debugging: Print the data to the console
     return render(request, 'includes/dashboard.html', {
-        'hotels': hotels,
+        'airports': airports,
         'daily_data': daily_data,
         'daily_data_json': daily_data_json,
-        'selected_hotel_name': selected_hotel_name
+        'selected_airport_name': selected_airport_name
     })
