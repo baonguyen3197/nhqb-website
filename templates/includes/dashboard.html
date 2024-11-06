@@ -4,23 +4,6 @@
 <div
   class="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow p-6 md:p-8"
 >
-  <!-- <form method="post" class="space-y-6">
-    {% csrf_token %}
-    <div>
-      <label for="hotel" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Select Hotel:</label>
-      <select id="hotel" name="hotel" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-        <option value="" disabled selected>Select a hotel</option>
-        {% for hotel in hotels %}
-        <option value="{{ hotel.dupe_id }}">{{ hotel.name }}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="flex justify-end">
-      <button type="submit" class="text-purple-700 hover:text-white border border-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-purple-400 dark:text-purple-400 dark:hover:text-white dark:hover:bg-purple-500 dark:focus:ring-purple-900">
-        Show Weather
-      </button>
-    </div>
-  </form> -->
   <form method="post" class="space-y-6">
     {% csrf_token %}
     <div>
@@ -52,18 +35,23 @@
   </form>
 </div>
 
-<div
-  class="mx-auto bg-white rounded-lg shadow dark:bg-gray-800 p-6 md:p-8 mt-8"
->
-  <table class="min-w-full bg-white dark:bg-gray-800 rounded-lg shadow">
-    <caption
-      class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800"
-    >
+<div class="mx-auto bg-white rounded-lg shadow dark:bg-gray-800 p-6 md:p-8 mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div class="col-span-full">
+    <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
       <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
         Weather data for the next 7 days of
         <span class="text-2xl font-bold">{{ selected_airport_name }}</span>
       </p>
     </caption>
+  </div>
+  <div id="line-chart" class="mt-8 md:mt-0" style="height: 400px"></div>
+  <div id="column-chart" class="mt-8 md:mt-0" style="height: 400px"></div>
+</div>
+
+<div
+  class="mx-auto bg-white rounded-lg shadow dark:bg-gray-800 p-6 md:p-8 mt-8"
+>
+  <table class="min-w-full bg-white dark:bg-gray-800 rounded-lg shadow">
     <thead>
       <tr>
         <th class="px-4 py-2 text-left text-gray-500 dark:text-gray-400">
@@ -191,19 +179,300 @@
         <td class="px-4 py-2 text-gray-900 dark:text-white">{{ index }}</td>
         {% endfor %}
       </tr>
+      <tr
+        class="{% cycle 'bg-gray-100 dark:bg-gray-700' 'bg-white dark:bg-gray-800' %}"
+      >
+        <td class="px-4 py-2 text-gray-900 dark:text-white">
+          <strong>Precipitation Sum (mm)</strong>
+        </td>
+        {% for value in daily_data.precipitation_sum %}
+        <td class="px-4 py-2 text-gray-900 dark:text-white">{{ value }} mm</td>
+        {% endfor %}
+      </tr>
+      <tr
+        class="{% cycle 'bg-gray-100 dark:bg-gray-700' 'bg-white dark:bg-gray-800' %}"
+      >
+        <td class="px-4 py-2 text-gray-900 dark:text-white">
+          <strong>Rain Sum (mm)</strong>
+        </td>
+        {% for value in daily_data.rain_sum %}
+        <td class="px-4 py-2 text-gray-900 dark:text-white">{{ value }} mm</td>
+        {% endfor %}
+      </tr>
+      <tr
+        class="{% cycle 'bg-gray-100 dark:bg-gray-700' 'bg-white dark:bg-gray-800' %}"
+      >
+        <td class="px-4 py-2 text-gray-900 dark:text-white">
+          <strong>Showers Sum (mm)</strong>
+        </td>
+        {% for value in daily_data.showers_sum %}
+        <td class="px-4 py-2 text-gray-900 dark:text-white">{{ value }} mm</td>
+        {% endfor %}
+      </tr>
+      <tr
+        class="{% cycle 'bg-gray-100 dark:bg-gray-700' 'bg-white dark:bg-gray-800' %}"
+      >
+        <td class="px-4 py-2 text-gray-900 dark:text-white">
+          <strong>Snowfall Sum (mm)</strong>
+        </td>
+        {% for value in daily_data.snowfall_sum %}
+        <td class="px-4 py-2 text-gray-900 dark:text-white">{{ value }} mm</td>
+        {% endfor %}
+      </tr>
+      <tr
+        class="{% cycle 'bg-gray-100 dark:bg-gray-700' 'bg-white dark:bg-gray-800' %}"
+      >
+        <td class="px-4 py-2 text-gray-900 dark:text-white">
+          <strong>Precipitation Hours</strong>
+        </td>
+        {% for value in daily_data.precipitation_hours %}
+        <td class="px-4 py-2 text-gray-900 dark:text-white">{{ value }}</td>
+        {% endfor %}
+      </tr>
+      <tr
+        class="{% cycle 'bg-gray-100 dark:bg-gray-700' 'bg-white dark:bg-gray-800' %}"
+      >
+        <td class="px-4 py-2 text-gray-900 dark:text-white">
+          <strong>Precipitation Probability Max (%)</strong>
+        </td>
+        {% for value in daily_data.precipitation_probability_max %}
+        <td class="px-4 py-2 text-gray-900 dark:text-white">{{ value }}%</td>
+        {% endfor %}
+      </tr>
+      <tr
+        class="{% cycle 'bg-gray-100 dark:bg-gray-700' 'bg-white dark:bg-gray-800' %}"
+      >
+        <td class="px-4 py-2 text-gray-900 dark:text-white">
+          <strong>Wind Speed 10m Max (m/s)</strong>
+        </td>
+        {% for value in daily_data.wind_speed_10m_max %}
+        <td class="px-4 py-2 text-gray-900 dark:text-white">{{ value }} m/s</td>
+        {% endfor %}
+      </tr>
+      <tr
+        class="{% cycle 'bg-gray-100 dark:bg-gray-700' 'bg-white dark:bg-gray-800' %}"
+      >
+        <td class="px-4 py-2 text-gray-900 dark:text-white">
+          <strong>Wind Gusts 10m Max (m/s)</strong>
+        </td>
+        {% for value in daily_data.wind_gusts_10m_max %}
+        <td class="px-4 py-2 text-gray-900 dark:text-white">{{ value }} m/s</td>
+        {% endfor %}
+      </tr>
+      <tr
+        class="{% cycle 'bg-gray-100 dark:bg-gray-700' 'bg-white dark:bg-gray-800' %}"
+      >
+        <td class="px-4 py-2 text-gray-900 dark:text-white">
+          <strong>Wind Direction 10m Dominant (°)</strong>
+        </td>
+        {% for value in daily_data.wind_direction_10m_dominant %}
+        <td class="px-4 py-2 text-gray-900 dark:text-white">{{ value }}°</td>
+        {% endfor %}
+      </tr>
+      <tr
+        class="{% cycle 'bg-gray-100 dark:bg-gray-700' 'bg-white dark:bg-gray-800' %}"
+      >
+        <td class="px-4 py-2 text-gray-900 dark:text-white">
+          <strong>Shortwave Radiation Sum (MJ/m²)</strong>
+        </td>
+        {% for value in daily_data.shortwave_radiation_sum %}
+        <td class="px-4 py-2 text-gray-900 dark:text-white">
+          {{ value }} MJ/m²
+        </td>
+        {% endfor %}
+      </tr>
+      <tr
+        class="{% cycle 'bg-gray-100 dark:bg-gray-700' 'bg-white dark:bg-gray-800' %}"
+      >
+        <td class="px-4 py-2 text-gray-900 dark:text-white">
+          <strong>ET0 FAO Evapotranspiration (mm)</strong>
+        </td>
+        {% for value in daily_data.et0_fao_evapotranspiration %}
+        <td class="px-4 py-2 text-gray-900 dark:text-white">{{ value }} mm</td>
+        {% endfor %}
+      </tr>
     </tbody>
   </table>
-</div>
-<div
-  class="mx-auto bg-white rounded-lg shadow dark:bg-gray-800 p-6 md:p-8 mt-8"
->
-  <div id="line-chart" class="mt-8" style="height: 400px"></div>
-</div>
 
-<script type="application/json" id="weather-data">
-  {{ daily_data_json|safe }}
-</script>
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script src="{% static 'js/chart_config.js' %}"></script>
+  <script type="application/json" id="weather-data">
+    {{ daily_data_json|safe }}
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const weatherDataElement = document.getElementById("weather-data");
 
-{% endblock %}
+      if (!weatherDataElement) {
+        console.error("Error: Weather data element is missing.");
+        return;
+      }
+
+      try {
+        const weatherData = JSON.parse(weatherDataElement.textContent);
+
+        console.log("Parsed Weather Data:", weatherData); // Debugging: Log the parsed data
+
+        // Line chart data
+        const lineChartOptions = {
+          chart: {
+            height: 400,
+            type: "line",
+            fontFamily: "Inter, sans-serif",
+            dropShadow: {
+              enabled: false,
+            },
+            toolbar: {
+              show: false,
+            },
+          },
+          series: [
+            {
+              name: "Max Temperature",
+              data: weatherData.temperature_2m_max.map(Number),
+              color: "#FF5733",
+            },
+            {
+              name: "Min Temperature",
+              data: weatherData.temperature_2m_min.map(Number),
+              color: "#33A4FF",
+            },
+            {
+              name: "Apparent Max Temperature",
+              data: weatherData.apparent_temperature_max.map(Number),
+              color: "#FF8C00",
+            },
+            {
+              name: "Apparent Min Temperature",
+              data: weatherData.apparent_temperature_min.map(Number),
+              color: "#1E90FF",
+            },
+            {
+              name: "UV Index Max",
+              data: weatherData.uv_index_max.map(Number),
+              color: "#FFD700",
+            },
+            {
+              name: "UV Index Clear Sky Max",
+              data: weatherData.uv_index_clear_sky_max.map(Number),
+              color: "#FF4500",
+            },
+          ],
+          xaxis: {
+            categories: weatherData.date,
+            labels: {
+              show: true,
+              style: {
+                fontFamily: "Inter, sans-serif",
+                cssClass:
+                  "text-xs font-normal fill-gray-500 dark:fill-gray-400",
+              },
+            },
+          },
+          yaxis: {
+            title: {
+              text: "Values",
+            },
+          },
+        };
+
+        if (
+          document.getElementById("line-chart") &&
+          typeof ApexCharts !== "undefined"
+        ) {
+          const lineChart = new ApexCharts(
+            document.getElementById("line-chart"),
+            lineChartOptions
+          );
+          lineChart.render();
+        }
+
+        // Column chart data
+        const columnChartOptions = {
+          chart: {
+            height: 400,
+            type: "bar",
+            fontFamily: "Inter, sans-serif",
+            dropShadow: {
+              enabled: false,
+            },
+            toolbar: {
+              show: false,
+            },
+          },
+          series: [
+            {
+              name: "Precipitation Sum",
+              data: weatherData.precipitation_sum.map(Number),
+              color: "#1E90FF",
+            },
+            {
+              name: "Rain Sum",
+              data: weatherData.rain_sum.map(Number),
+              color: "#00BFFF",
+            },
+            {
+              name: "Showers Sum",
+              data: weatherData.showers_sum.map(Number),
+              color: "#87CEFA",
+            },
+            {
+              name: "Snowfall Sum",
+              data: weatherData.snowfall_sum.map(Number),
+              color: "#B0E0E6",
+            },
+            {
+              name: "Precipitation Hours",
+              data: weatherData.precipitation_hours.map(Number),
+              color: "#4682B4",
+            },
+            {
+              name: "Precipitation Probability Max",
+              data: weatherData.precipitation_probability_max.map(Number),
+              color: "#5F9EA0",
+            },
+            {
+              name: "Daylight Duration",
+              data: weatherData.daylight_duration.map(Number),
+              color: "#FFD700",
+            },
+            {
+              name: "Sunshine Duration",
+              data: weatherData.sunshine_duration.map(Number),
+              color: "#FFA500",
+            },
+          ],
+          xaxis: {
+            categories: weatherData.date,
+            labels: {
+              show: true,
+              style: {
+                fontFamily: "Inter, sans-serif",
+                cssClass:
+                  "text-xs font-normal fill-gray-500 dark:fill-gray-400",
+              },
+            },
+          },
+          yaxis: {
+            title: {
+              text: "Values",
+            },
+          },
+        };
+
+        if (
+          document.getElementById("column-chart") &&
+          typeof ApexCharts !== "undefined"
+        ) {
+          const columnChart = new ApexCharts(
+            document.getElementById("column-chart"),
+            columnChartOptions
+          );
+          columnChart.render();
+        }
+      } catch (error) {
+        console.error("Error parsing JSON data:", error);
+        console.log("Error details:", error.message); // Log the error message to the console
+      }
+    });
+  </script>
+  {% endblock %}
+</div>

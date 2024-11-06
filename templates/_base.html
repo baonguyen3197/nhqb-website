@@ -14,7 +14,7 @@
       href="{% static 'assets/favicon/favicon.ico' %}"
       type="image/x-icon"
     />
-    
+
     {% compress css %}
     <link rel="stylesheet" href="{% static 'src/output.css' %}" />
     {% endcompress %} {% block extra_css %}{% endblock %}
@@ -38,6 +38,7 @@
     </div>
     <!-- End of new HTML -->
 
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
     {% block extra_js %}{% endblock %}
   </body>

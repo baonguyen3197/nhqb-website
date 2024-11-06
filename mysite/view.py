@@ -38,7 +38,16 @@ def fetch_weather_data(latitude, longitude):
     params = {
         "latitude": latitude,
         "longitude": longitude,
-        "daily": ["weather_code", "temperature_2m_max", "temperature_2m_min", "apparent_temperature_max", "apparent_temperature_min", "sunrise", "sunset", "daylight_duration", "sunshine_duration", "uv_index_max", "uv_index_clear_sky_max"],
+        "daily": [
+            "weather_code", "temperature_2m_max", "temperature_2m_min", 
+            "apparent_temperature_max", "apparent_temperature_min", 
+            "sunrise", "sunset", "daylight_duration", "sunshine_duration", 
+            "uv_index_max", "uv_index_clear_sky_max", "precipitation_sum", 
+            "rain_sum", "showers_sum", "snowfall_sum", "precipitation_hours", 
+            "precipitation_probability_max", "wind_speed_10m_max", 
+            "wind_gusts_10m_max", "wind_direction_10m_dominant", 
+            "shortwave_radiation_sum", "et0_fao_evapotranspiration"
+        ],
         "timezone": "Asia/Bangkok"
     }
     response = cache_session.get(url, params=params)
@@ -64,41 +73,23 @@ def fetch_weather_data(latitude, longitude):
         "sunshine_duration": data["daily"]["sunshine_duration"],
         "uv_index_max": data["daily"]["uv_index_max"],
         "uv_index_clear_sky_max": data["daily"]["uv_index_clear_sky_max"],
+        "precipitation_sum": data["daily"]["precipitation_sum"],
+        "rain_sum": data["daily"]["rain_sum"],
+        "showers_sum": data["daily"]["showers_sum"],
+        "snowfall_sum": data["daily"]["snowfall_sum"],
+        "precipitation_hours": data["daily"]["precipitation_hours"],
+        "precipitation_probability_max": data["daily"]["precipitation_probability_max"],
+        "wind_speed_10m_max": data["daily"]["wind_speed_10m_max"],
+        "wind_gusts_10m_max": data["daily"]["wind_gusts_10m_max"],
+        "wind_direction_10m_dominant": data["daily"]["wind_direction_10m_dominant"],
+        "shortwave_radiation_sum": data["daily"]["shortwave_radiation_sum"],
+        "et0_fao_evapotranspiration": data["daily"]["et0_fao_evapotranspiration"]
     }
 
     daily_data_json = json.dumps(daily_data)  # Serialize data to JSON
 
     return daily_data, daily_data_json
-
-# def dashboard(request):
-#     hotels = Hotel.objects.all()  # Fetch all hotels from the database
-#     selected_hotel_name = "Ho Chi Minh City"  # Default location name
-
-#     if request.method == "POST":
-#         hotel_id = request.POST.get("hotel")
-#         if hotel_id:
-#             selected_hotel = Hotel.objects.get(dupe_id=hotel_id)
-#             latitude = selected_hotel.latitude
-#             longitude = selected_hotel.longitude
-#             selected_hotel_name = selected_hotel.name
-#         else:
-#             # Handle the case where no hotel is selected
-#             latitude = 10.823
-#             longitude = 106.6296
-#     else:
-#         # Default coordinates
-#         latitude = 10.823
-#         longitude = 106.6296
-
-#     daily_data, daily_data_json = fetch_weather_data(latitude, longitude)
-#     print("Daily Data:", daily_data_json)  # Debugging: Print the data to the console
-#     return render(request, 'includes/dashboard.html', {
-#         'hotels': hotels,
-#         'daily_data': daily_data,
-#         'daily_data_json': daily_data_json,
-#         'selected_hotel_name': selected_hotel_name
-#     })
-
+    
 def dashboard(request):
     airports = Airport.objects.all()  # Fetch all airports from the database
     selected_airport_name = "Tan Binh district, Ho Chi Minh City"  # Default location name
