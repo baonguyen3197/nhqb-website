@@ -102,6 +102,7 @@ class CustomLoginView(LoginView):
             return self.form_invalid(form)
         user.isLogin = True
         user.save()
+        logger.debug(f"User {user.username} logged in successfully.")
         return super().form_valid(form)
 
 class CustomLogoutView(LogoutView):
@@ -119,6 +120,7 @@ class CustomLogoutView(LogoutView):
                 if user.id == data.get('_auth_user_id'):
                     session.delete()
         auth_logout(request)
+        logger.debug(f"User {user.username} logged out successfully.")
         return redirect(self.next_page)
 
 @csrf_protect
