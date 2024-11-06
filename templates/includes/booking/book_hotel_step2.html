@@ -109,14 +109,17 @@
   </div>
 </form>
 
-<div id="line-chart" class="mt-6"></div>
+<div id="weather-charts" class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div id="line-chart"></div>
+  <div id="column-chart"></div>
+</div>
 <div id="weather-message" class="mt-6"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const hotelSelect = document.getElementById("hotel_id");
-    const chartContainer = document.getElementById("line-chart");
+    const lineChartContainer = document.getElementById("line-chart");
+    const columnChartContainer = document.getElementById("column-chart");
     const weatherMessageContainer = document.getElementById("weather-message");
 
     hotelSelect.addEventListener("change", function () {
@@ -143,7 +146,7 @@
           if (data.error) {
             showWeatherMessage(data.error);
           } else {
-            renderChart(data, startDate, endDate);
+            renderCharts(data, startDate, endDate);
           }
         })
         .catch((error) => {
@@ -153,10 +156,11 @@
 
     function showWeatherMessage(message) {
       weatherMessageContainer.innerHTML = `<p class="text-red-500">${message}</p>`;
-      chartContainer.innerHTML = ""; // Clear previous chart
+      lineChartContainer.innerHTML = ""; // Clear previous chart
+      columnChartContainer.innerHTML = ""; // Clear previous chart
     }
 
-    function renderChart(data, startDate, endDate) {
+    function renderCharts(data, startDate, endDate) {
       weatherMessageContainer.innerHTML = ""; // Clear previous message
 
       const availableStartDate = new Date(data.date[0]);
@@ -182,7 +186,7 @@
 
       weatherMessageContainer.innerHTML = `<p class="text-green-500">${message}</p>`;
 
-      const options = {
+      const lineChartOptions = {
         chart: {
           height: 400,
           type: "line",
@@ -243,10 +247,87 @@
         },
       };
 
-      if (chartContainer) {
-        chartContainer.innerHTML = ""; // Clear previous chart
-        const chart = new ApexCharts(chartContainer, options);
-        chart.render();
+      const columnChartOptions = {
+        chart: {
+          height: 400,
+          type: 'bar',
+          fontFamily: 'Inter, sans-serif',
+          dropShadow: {
+            enabled: false,
+          },
+          toolbar: {
+            show: false,
+          },
+        },
+        series: [
+          {
+            name: 'Precipitation Sum',
+            data: data.precipitation_sum.map(Number),
+            color: '#1E90FF',
+          },
+          {
+            name: 'Rain Sum',
+            data: data.rain_sum.map(Number),
+            color: '#00BFFF',
+          },
+          {
+            name: 'Showers Sum',
+            data: data.showers_sum.map(Number),
+            color: '#87CEFA',
+          },
+          {
+            name: 'Snowfall Sum',
+            data: data.snowfall_sum.map(Number),
+            color: '#B0E0E6',
+          },
+          {
+            name: 'Precipitation Hours',
+            data: data.precipitation_hours.map(Number),
+            color: '#4682B4',
+          },
+          {
+            name: 'Precipitation Probability Max',
+            data: data.precipitation_probability_max.map(Number),
+            color: '#5F9EA0',
+          },
+          {
+            name: 'Daylight Duration',
+            data: data.daylight_duration.map(Number),
+            color: '#FFD700',
+          },
+          {
+            name: 'Sunshine Duration',
+            data: data.sunshine_duration.map(Number),
+            color: '#FFA500',
+          },
+        ],
+        xaxis: {
+          categories: data.date,
+          labels: {
+            show: true,
+            style: {
+              fontFamily: 'Inter, sans-serif',
+              cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+            }
+          },
+        },
+        yaxis: {
+          title: {
+            text: 'Values',
+          },
+        },
+      };
+
+      if (lineChartContainer) {
+        lineChartContainer.innerHTML = ""; // Clear previous chart
+        const lineChart = new ApexCharts(lineChartContainer, lineChartOptions);
+        lineChart.render();
+      }
+
+      if (columnChartContainer) {
+        columnChartContainer.innerHTML = ""; // Clear previous chart
+        const columnChart = new ApexCharts(columnChartContainer, columnChartOptions);
+        columnChart.render();
       }
     }
   });
