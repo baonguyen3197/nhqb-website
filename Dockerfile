@@ -35,4 +35,4 @@ COPY . .
 EXPOSE 8080
 
 # Run the Django application
-CMD ["sh", "-c", ". venv/bin/activate && python manage.py migrate && python manage.py runserver 0.0.0.0:8080"]
+CMD ["sh", "-c", ". venv/bin/activate && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8080"]
