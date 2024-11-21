@@ -20,6 +20,10 @@ class UserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
 
+    def get_gravatar_url(self, email, size=100, default='identicon'):
+        email_hash = hashlib.md5(email.lower().encode('utf-8')).hexdigest()
+        return f"https://www.gravatar.com/avatar/{email_hash}?s={size}&d={default}"
+
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(max_length=254, unique=True)
@@ -31,6 +35,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     isLogin = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
     role = models.CharField(max_length=30, default='user')
     created_at = models.DateTimeField(auto_now_add=True)
     avatar_img = models.URLField(max_length=200, blank=True, null=True)

@@ -75,3 +75,7 @@ python3 manage.py migrate Users --fake
 UPDATE "Users_user"
 SET "isLogin" = false
 WHERE "id" = '9a939b77-787b-4ebb-a15a-8425feae7882';
+
+UPDATE "Users_user"
+SET "is_staff" = true
+WHERE "id" = 'd8da2ae3-43d6-4e28-88eb-58d983d9d1d2';
