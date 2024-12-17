@@ -4,11 +4,10 @@ metadata:
   name: mediago-webapp
   namespace: app-web
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: mediago-webapp
   ports:
   - protocol: TCP
     port: 80
     targetPort: 8080
-    nodePort: 32080
