@@ -300,6 +300,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://10.10.100.80:32080',
     'http://10.10.100.90:32080',
     'http://10.10.100.95:32080',
+    'https://mylocaldomain.local',
 ]
 
 # Security settings
