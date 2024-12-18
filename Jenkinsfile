@@ -27,13 +27,34 @@ pipeline {
             }
         }
         
-        stage('Build & Push with Kaniko') {
+        // stage('Build & Push with Kaniko') {
+        //     steps {
+        //         container(name: 'kaniko', shell: '/busybox/sh') {
+        //             sh '''#!/busybox/sh
+        //             /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${DOCKER_IMAGE}
+        //             '''
+        //         }
+        //     }
+        // }
+        stage('Build with Kaniko') {
             steps {
-                 withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                container(name: 'kaniko', shell: '/busybox/sh') {
                     sh '''#!/busybox/sh
-                    echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
-                    /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${DOCKER_IMAGE} --skip-tls-verify
+                    /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${DOCKER_IMAGE} --no-push
                     '''
+                }
+            }
+        }
+
+        stage('Push with Kaniko') {
+            steps {
+                container(name: 'kaniko', shell: '/busybox/sh') {
+                    withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                        sh '''#!/busybox/sh
+                        echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
+                        /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${DOCKER_IMAGE}
+                        '''
+                    }
                 }
             }
         }
