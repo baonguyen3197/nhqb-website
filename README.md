@@ -22,3 +22,11 @@ python3 manage.py migrate
 ## --- Creating a superuser --- ##
 
 python3 manage.py createsuperuser
+
+## --- Docker build & push --- ##
+# use the following command to build the docker image
+# if Jenkins is not available
+docker login
+docker build -t nhqb3197/nhqb-mysite:latest .
+docker push nhqb3197/nhqb-mysite:latest
+
