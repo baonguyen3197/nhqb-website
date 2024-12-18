@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     libldap2-dev \
     libssl-dev \
+    python3-venv \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -17,7 +18,7 @@ WORKDIR /app/backend
 COPY requirements.txt .
 
 # Create a virtual environment
-RUN python -m venv venv
+RUN python3 -m venv venv
 
 # Activate the virtual environment and install dependencies
 RUN /bin/bash -c "source venv/bin/activate && pip install urllib3==1.25.11 && pip install --no-cache-dir -r requirements.txt && pip install --upgrade urllib3"
