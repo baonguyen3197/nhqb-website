@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: mediago-webapp
-        image: index.docker.io/nhqb3197/nhqb-mysite:latest
+        image: index.docker.io/nhqb3197/nhqb-mysite
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
