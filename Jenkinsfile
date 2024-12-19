@@ -49,6 +49,16 @@ pipeline {
             }
         }
 
+        stage('Update Deployment') {
+            steps {
+                script {
+                    sh """
+                    sed -i 's/TAG_PLACEHOLDER/${env.BUILD_NUMBER}/g' manifests/deployment.yaml
+                    """
+                }
+            }
+        }
+
         stage('Trigger ArgoCD Sync') {
             steps {
                 withCredentials([string(credentialsId: 'argocd-cred', variable: 'ARGOCD_AUTH_TOKEN')]) {
