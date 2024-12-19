@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = 'index.docker.io/nhqb3197/nhqb-mysite:latest'
+        DOCKER_IMAGE = "index.docker.io/nhqb3197/nhqb-mysite:${env.BUILD_NUMBER}"
         GITHUB_CREDENTIALS_ID = 'nhqb-website'
         DOCKER_CREDENTIALS_ID = 'dockerhub-creds'
         ARGOCD_SERVER = '10.10.100.90:32007'
@@ -27,15 +27,6 @@ pipeline {
             }
         }
         
-        // stage('Build & Push with Kaniko') {
-        //     steps {
-        //         container(name: 'kaniko', shell: '/busybox/sh') {
-        //             sh '''#!/busybox/sh
-        //             /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${DOCKER_IMAGE}
-        //             '''
-        //         }
-        //     }
-        // }
         stage('Build with Kaniko') {
             steps {
                 container(name: 'kaniko', shell: '/busybox/sh') {
@@ -70,5 +61,3 @@ pipeline {
         }
     }
 }
-                // curl -s -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ${ARGOCD_AUTH_TOKEN}" -d '{"sync": true}' http://${ARGOCD_SERVER}/api/v1/applications/${ARGOCD_APP_NAME}/sync
-                // echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
