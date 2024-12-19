@@ -65,5 +65,4 @@ COPY . .
 EXPOSE 8080
 
 # Run the Django application
-CMD ["python3", "manage.py", "migrate"]
-CMD ["python3", "manage.py", "runserver", "8080"]
+CMD ["/bin/bash", "-c", "python3 manage.py migrate && python3 manage.py runserver 8080"]

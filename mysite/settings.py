@@ -32,8 +32,8 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'default-secret-key')
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost',
+    '127.0.0.1:8080',
+    'localhost:8080',
     '10.10.100.80',
     '10.10.100.80:32080',
     '10.10.100.90',
@@ -302,3 +302,17 @@ CSRF_TRUSTED_ORIGINS = [
     'http://10.10.100.90:8080',
     'http://10.10.100.95:8080',
 ]
+
+# Security settings
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+# SECURE_HSTS_SECONDS = 3600
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# SECURE_HSTS_PRELOAD = True
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Use X-Forwarded-Proto header
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
