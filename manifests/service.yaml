@@ -1,28 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
+  labels:
+    app: mediago-webapp
+    argocd.argoproj.io/instance: mediago-webapp
   name: mediago-webapp
   namespace: app-web
 spec:
-  type: NodePort
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8080
+      nodePort: 32080
   selector:
     app: mediago-webapp
-  ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 8080
-    nodePort: 32080
-
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: mediago-webapp
-#   namespace: app-web
-# spec:
-#   type: NodePort
-#   selector:
-#     app: mediago-webapp
-#   ports:
-#   - protocol: TCP
-#     port: 80
-#     targetPort: 8080
+  type: NodePort
