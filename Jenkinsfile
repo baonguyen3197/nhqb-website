@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = "index.docker.io/nhqb3197/nhqb-mysite:${env.BUILD_NUMBER}"
+        DOCKER_IMAGE = 'index.docker.io/nhqb3197/nhqb-mysite:latest'
         GITHUB_CREDENTIALS_ID = 'nhqb-website'
         DOCKER_CREDENTIALS_ID = 'dockerhub-creds'
         ARGOCD_SERVER = '10.10.100.90:32007'
@@ -45,16 +45,6 @@ pipeline {
                         /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${DOCKER_IMAGE}
                         '''
                     }
-                }
-            }
-        }
-
-        stage('Update Deployment') {
-            steps {
-                script {
-                    sh """
-                    sed -i 's/TAG_PLACEHOLDER/${env.BUILD_NUMBER}/g' manifests/deployment.yaml
-                    """
                 }
             }
         }
