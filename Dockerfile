@@ -52,6 +52,9 @@ WORKDIR /app/backend
 # Copy the requirements.txt file to the container
 COPY requirements.txt .
 
+# Upgrade pip to the latest version
+RUN pip install --upgrade pip
+
 # Install dependencies directly into the system Python environment
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -63,4 +66,4 @@ EXPOSE 8080
 
 # Run the Django application
 CMD ["python3", "manage.py", "migrate"]
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:8080"]
+CMD ["python3", "manage.py", "runserver", "8080"]
