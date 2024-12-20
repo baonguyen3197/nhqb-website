@@ -37,30 +37,6 @@ pipeline {
             }
         }
         
-        // stage('Build with Kaniko') {
-        //     steps {
-        //         container(name: 'kaniko', shell: '/busybox/sh') {
-        //             withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
-        //                 sh '''#!/busybox/sh
-        //                 /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${DOCKER_IMAGE} --no-push
-        //                 '''
-        //             }
-        //         }
-        //     }
-        // }
-
-        // stage('Push with Kaniko') {
-        //     steps {
-        //         container(name: 'kaniko', shell: '/busybox/sh') {
-        //             withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
-        //                 sh '''#!/busybox/sh
-        //                 /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${DOCKER_IMAGE}
-        //                 '''
-        //             }
-        //         }
-        //     }
-        // }
-
         stage('Trigger ArgoCD Sync') {
             steps {
                 withCredentials([string(credentialsId: 'argocd-cred', variable: 'ARGOCD_AUTH_TOKEN')]) {
