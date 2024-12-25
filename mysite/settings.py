@@ -32,6 +32,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'default-secret-key')
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    'nhqb.duckdns.org',
     '127.0.0.1',
     'localhost',
     '10.10.100.80',
