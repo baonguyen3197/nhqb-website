@@ -30,3 +30,7 @@ docker login
 docker build -t nhqb3197/nhqb-mysite:latest .
 docker push nhqb3197/nhqb-mysite:latest
 
+## --- Kill all Caddy processes --- ##
+# use the following command to kill all Caddy processes
+
+kill -9 $(ps aux | grep '[c]addy')

@@ -298,6 +298,7 @@ LOGIN_REDIRECT_URL = '/users/profile/'  # URL to redirect to after login
 LOGOUT_REDIRECT_URL = '/users/login/'  # URL to redirect to after logout
 
 CSRF_TRUSTED_ORIGINS = [
+    'https://nhqb.duckdns.org',
     'http://localhost:8080',
     'http://10.10.100.80:32080',
     'http://10.10.100.90:8080',
@@ -320,4 +321,4 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS  = False
 SECURE_FRAME_DENY               = False
 
 # Use X-Forwarded-Proto header
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
