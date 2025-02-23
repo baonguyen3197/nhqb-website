@@ -1,3 +1,44 @@
+## --- Install --- ## 
+microk8s helm install yugabytedb yugabytedb/yugabyte \
+--version 2.25.0 \
+--set resource.master.requests.cpu=0.5,resource.master.requests.memory=0.5Gi,\
+resource.tserver.requests.cpu=0.5,resource.tserver.requests.memory=0.5Gi,\
+replicas.master=1,replicas.tserver=1,\
+preflight.skipUlimit=true --namespace yugabytedb
+
+## --- Setup --- ##
+Logs from yb-master in yb-master-0
+
+Optional ulimit values too low, see below. In kubernetesset the helm override 'preflight.skipUlimit: false'to override this check
+core file size | Expected Value : -1 | Current Value : 0
+Required ulimit values too low, see below. In kubernetesset the helm override 'preflight.skipUlimit: false'to override this check
+open files | Expected Value : 1048576 | Current Value : 65536
+
+----------------------------------------------------------------------
+
+nano /etc/security/limits.conf
+```
+*                -       core            unlimited
+*                -       data            unlimited
+*                -       fsize           unlimited
+*                -       sigpending      119934
+*                -       memlock         64
+*                -       rss             unlimited
+*                -       nofile          1048576
+*                -       msgqueue        819200
+*                -       stack           8192
+*                -       cpu             unlimited
+*                -       nproc           12000
+*                -       locks           unlimited
+```
+
+check ulimit
+
+ulimit -n
+ulimit -c
+
+ulimit -a
+
 ## --- Exec --- ##
 
 microk8s kubectl exec -n yugabytedb -it yb-tserver-0 -- ysqlsh -h yb-tserver-0.yb-tservers.yugabytedb
