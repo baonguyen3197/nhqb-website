@@ -9,11 +9,11 @@ nhqb-vm-2: 10.10.100.95
 nhqb-vm-1: 10.10.100.90
 
 yb-master-ui 7000 -> 32001
+yb-tserver-ui 9000 -> 32005
+yb-tservers 5433 -> 32006
 kubernetes-dashboard 8001 -> 32002
 grafana 3000 -> 32003
 jenkins-service 8080 -> 32004
-yb-tserver-ui 9000 -> 32005
-yb-tservers 5433 -> 32006
 ingress-easyhaproxy:
     ports:
     - name: http
