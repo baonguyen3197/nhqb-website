@@ -1,8 +1,4 @@
-apiVersion: v1
 kind: Pod
-metadata:
-  name: kaniko-pod
-  namespace: devops-tools
 spec:
   containers:
   - name: kaniko
@@ -11,7 +7,7 @@ spec:
     command:
     - sleep
     args:
-    - "9999999"
+    - 9999999
     volumeMounts:
       - name: jenkins-docker-cfg
         mountPath: /kaniko/.docker
