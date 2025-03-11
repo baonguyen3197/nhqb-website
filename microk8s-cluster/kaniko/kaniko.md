@@ -1,9 +1,9 @@
 ## --- docker-serect --- ##
 microk8s kubectl create secret docker-registry regcred \
     --docker-server=https://index.docker.io/v1/ \
-    --docker-username=nhqb3197 \
-    --docker-password=Therookie97! \
-    --docker-email=baonguyen3197@gmail.com
+    --docker-username={username} \
+    --docker-password={password} \
+    --docker-email={email}
     - n devops-tools
 
 ## --- kaniko --- ##
