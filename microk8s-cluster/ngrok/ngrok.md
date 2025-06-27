@@ -20,6 +20,16 @@ microk8s helm install ngrok-operator ngrok/ngrok-operator \
 
 ## --- Configure ngrok --- ##
 ```bash
-microk8s kubectl apply -f ngrok.yml
+microk8s kubectl apply -f ngrok.yaml
 ```
 
+## --- --- ##
+```bash
+microk8s kubectl create namespace ngrok
+microk8s kubectl create secret generic ngrok-secret \
+  --from-literal=authtoken=$NGROK_AUTHTOKEN \
+  -n ngrok
+microk8s kubectl create secret generic ngrok-api-key \
+  --from-literal=api-key=$YOUR_NGROK_API_KEY \ 
+  -n ngrok
+```

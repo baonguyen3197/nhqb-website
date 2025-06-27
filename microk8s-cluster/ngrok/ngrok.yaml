@@ -1,18 +1,63 @@
 apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: ngrok
+spec:
+  controller: k8s.ngrok.com/ingress-controller
+
+---
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: jenkins
-  namespace: devops-tools  # Specify the namespace if it's not default
+  namespace: devops-tools
+  annotations:
+    kubernetes.io/ingress.class: ngrok
 spec:
   ingressClassName: ngrok
   rules:
-  - host: silkworm-winning-previously.ngrok-free.app
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: jenkins-service
-            port:
-              number: 8080
+    - host: silkworm-winning-previously.ngrok-free.app
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: jenkins-service
+                port:
+                  number: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ngrok-ingress-controller
+  namespace: ngrok
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ngrok-ingress-controller
+  template:
+    metadata:
+      labels:
+        app: ngrok-ingress-controller
+    spec:
+      containers:
+        - name: ngrok-ingress-controller
+          image: ngrok/kubernetes-ingress-controller:latest
+          env:
+            - name: NGROK_AUTHTOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: ngrok-secret
+                  key: authtoken
+            - name: NGROK_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ngrok-api-key
+                  key: api-key
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
