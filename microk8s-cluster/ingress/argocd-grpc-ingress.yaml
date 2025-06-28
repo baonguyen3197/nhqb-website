@@ -1,16 +1,14 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: argocd-server-ingress
+  name: argocd-server-grpc-ingress
   namespace: argocd
   annotations:
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
 spec:
   ingressClassName: nginx
   rules:
-  - host: argocd.example.com
-    http:
+  - http:
       paths:
       - path: /
         pathType: Prefix
@@ -19,3 +17,8 @@ spec:
             name: argocd-server
             port:
               name: https
+    host: grpc.argocd.local
+  tls:
+  - hosts:
+    - grpc.argocd.local
+    secretName: argocd-ingress-grpc
