@@ -108,7 +108,7 @@ DATABASES = {
         'ENGINE': 'django_yugabytedb',
         'NAME': 'mediago',
         'HOST': '10.10.100.90',
-        'PORT': 32006,
+        'PORT': 32062,
         'USER': 'yugabyte',
         'CONN_MAX_AGE': None,
         'PASSWORD': 'yugabyte'
@@ -242,52 +242,52 @@ LOGGING = {
     },
 }
 
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'formatters': {
-#         'json': {
-#             '()': 'pythonjsonlogger.jsonlogger.JsonFormatter',
-#             'format': '%(asctime)s %(levelname)s %(name)s %(message)s %(pathname)s %(lineno)d %(funcName)s %(request)s %(status_code)s',
-#         },
-#         'verbose': {
-#             'format': '{levelname} {asctime} {module} {message}',
-#             'style': '{',
-#         },
-#     },
-#     'handlers': {
-#         'console': {
-#             'class': 'logging.StreamHandler',
-#             'formatter': 'json',
-#         },
-#         'file': {
-#             'class': 'logging.FileHandler',
-#             'filename': 'django.log',
-#             'formatter': 'verbose',
-#         },
-#     },
-#     'loggers': {
-#         'django': {
-#             'handlers': ['console', 'file'],
-#             'level': 'DEBUG',
-#             'propagate': True,
-#         },
-#         'django.request': {
-#             'handlers': ['console', 'file'],
-#             'level': 'DEBUG',
-#             'propagate': False,
-#         },
-#         'django.db.backends': {
-#             'handlers': ['console', 'file'],
-#             'level': 'DEBUG',
-#             'propagate': False,
-#         },
-#     },
-#     'root': {
-#         'handlers': ['console', 'file'],
-#         'level': 'DEBUG',
-#     },
-# }
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'json': {
+            '()': 'pythonjsonlogger.jsonlogger.JsonFormatter',
+            'format': '%(asctime)s %(levelname)s %(name)s %(message)s %(pathname)s %(lineno)d %(funcName)s %(request)s %(status_code)s',
+        },
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'json',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': 'django.log',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'django.db.backends': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+    'root': {
+        'handlers': ['console', 'file'],
+        'level': 'DEBUG',
+    },
+}
 
 # amadeus
 AMADEUS_API_KEY = 'VXc7ujBFQYmEOVLgZj14oSJKAvyaAJAd'
@@ -297,28 +297,28 @@ LOGIN_URL = '/users/login/'  # URL to redirect to for login
 LOGIN_REDIRECT_URL = '/users/profile/'  # URL to redirect to after login
 LOGOUT_REDIRECT_URL = '/users/login/'  # URL to redirect to after logout
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://nhqb.duckdns.org',
-    'http://localhost:8080',
-    'http://10.10.100.80:32080',
-    'http://10.10.100.90:8080',
-    'http://10.10.100.95:8080',
-]
+# CSRF_TRUSTED_ORIGINS = [
+#     'https://nhqb.duckdns.org',
+#     'http://localhost:8080',
+#     'http://10.10.100.80:32080',
+#     'http://10.10.100.90:8080',
+#     'http://10.10.100.95:8080',
+# ]
 
-# Security settings
-# SECURE_HSTS_PRELOAD = True
-SECURE_BROWSER_XSS_FILTER = True
-X_FRAME_OPTIONS = 'DENY'
-SECURE_CONTENT_TYPE_NOSNIFF = True
-CORS_REPLACE_HTTPS_REFERER      = False
-HOST_SCHEME                     = "http://"
-SECURE_PROXY_SSL_HEADER         = None
-SECURE_SSL_REDIRECT             = False
-SESSION_COOKIE_SECURE           = False
-CSRF_COOKIE_SECURE              = False
-SECURE_HSTS_SECONDS             = None
-SECURE_HSTS_INCLUDE_SUBDOMAINS  = False
-SECURE_FRAME_DENY               = False
+# # Security settings
+# # SECURE_HSTS_PRELOAD = True
+# SECURE_BROWSER_XSS_FILTER = True
+# X_FRAME_OPTIONS = 'DENY'
+# SECURE_CONTENT_TYPE_NOSNIFF = True
+# CORS_REPLACE_HTTPS_REFERER      = False
+# HOST_SCHEME                     = "http://"
+# SECURE_PROXY_SSL_HEADER         = None
+# SECURE_SSL_REDIRECT             = False
+# SESSION_COOKIE_SECURE           = False
+# CSRF_COOKIE_SECURE              = False
+# SECURE_HSTS_SECONDS             = None
+# SECURE_HSTS_INCLUDE_SUBDOMAINS  = False
+# SECURE_FRAME_DENY               = False
 
-# Use X-Forwarded-Proto header
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# # Use X-Forwarded-Proto header
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
