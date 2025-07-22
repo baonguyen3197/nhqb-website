@@ -29,21 +29,42 @@ pipeline {
             }
         }
 
-        stage('Build & Push with Kaniko') {
+        // stage('Build & Push with Kaniko') {
+        //     steps {
+        //         container(name: 'kaniko', shell: '/busybox/sh') {
+        //             sh '''#!/busybox/sh
+        //             /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${DOCKER_IMAGE}
+        //             '''
+        //         }
+        //     }
+        // }
+        
+        stage('Build & Push Docker Image') {
             steps {
-                container(name: 'kaniko', shell: '/busybox/sh') {
-                    sh '''#!/busybox/sh
-                    /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${DOCKER_IMAGE}
-                    '''
+                withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                    sh """
+                    docker build -t ${DOCKER_IMAGE} .
+                    echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
+                    docker push ${DOCKER_IMAGE}
+                    """
                 }
             }
         }
-        
+
         stage('Trigger ArgoCD Sync') {
             steps {
-                withCredentials([string(credentialsId: 'argocd-cred', variable: 'ARGOCD_AUTH_TOKEN')]) {
+                // withCredentials([string(credentialsId: 'argocd-cred', variable: 'ARGOCD_AUTH_TOKEN')]) {
+                //     sh """
+                //     curl -s -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ${ARGOCD_AUTH_TOKEN}" -d '{"syncOptions": ["Force=true", "Replace=true"]}' http://${ARGOCD_SERVER}/api/v1/applications/${ARGOCD_APP_NAME}/sync
+                //     """
+                // }
+                withCredentials([string(credentialsId: 'argocd-cred', variable: 'ARGOCD_TOKEN')]) {
                     sh """
-                    curl -s -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ${ARGOCD_AUTH_TOKEN}" -d '{"syncOptions": ["Force=true", "Replace=true"]}' http://${ARGOCD_SERVER}/api/v1/applications/${ARGOCD_APP_NAME}/sync
+                    curl -k -X POST \
+                      -H "Content-Type: application/json" \
+                      -H "Authorization: Bearer ${ARGOCD_TOKEN}" \
+                      -d '{"syncOptions": ["Force=true", "Replace=true"]}' \
+                      ${ARGOCD_SERVER}/api/v1/applications/${ARGOCD_APP_NAME}/sync
                     """
                 }
             }
