@@ -9,7 +9,8 @@ pipeline {
         DOCKER_IMAGE = 'index.docker.io/nhqb3197/nhqb-mysite:latest'
         GITHUB_CREDENTIALS_ID = 'nhqb-website'
         DOCKER_CREDENTIALS_ID = 'dockerhub-creds'
-        ARGOCD_SERVER = '10.10.100.90:32007'
+        // ARGOCD_SERVER = '10.10.100.90:32007'
+        ARGOCD_SERVER = 'https://argocd.local/'
         ARGOCD_APP_NAME = 'app-web'
         ARGOCD_AUTH_TOKEN = credentials('argocd-cred')
     }

@@ -1,6 +1,6 @@
 ## --- Install --- ## 
 microk8s helm install yugabytedb yugabytedb/yugabyte \
---version 2.25.0 \
+--version 2.25.2 \
 --set resource.master.requests.cpu=0.5,resource.master.requests.memory=0.5Gi,\
 resource.tserver.requests.cpu=0.5,resource.tserver.requests.memory=0.5Gi,\
 replicas.master=1,replicas.tserver=1,\

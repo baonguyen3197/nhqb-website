@@ -12,10 +12,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
-import ldap
-from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
+# import ldap
+# from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
 import logging
-from pythonjsonlogger import jsonlogger
+# from pythonjsonlogger import jsonlogger
 import json
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -105,9 +105,9 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django_yugabytedb',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'mediago',
-        'HOST': '10.10.100.90',
+        'HOST': '10.0.10.52',
         'PORT': 32062,
         'USER': 'yugabyte',
         'CONN_MAX_AGE': None,
@@ -172,60 +172,60 @@ REST_FRAMEWORK = {
     'UNAUTHENTICATED_USER': None,
 }
 
-# LDAP settings
-AUTH_USER_MODEL = 'Users.User'
+# # LDAP settings
+# AUTH_USER_MODEL = 'Users.User'
 
-LDAP_SERVER_URI = 'ldap://10.10.100.95:389'
-LDAP_BIND_DN = 'cn=admin,dc=example,dc=com'
-LDAP_BIND_PASSWORD = 'ubuntu'
+# LDAP_SERVER_URI = 'ldap://10.10.100.95:389'
+# LDAP_BIND_DN = 'cn=admin,dc=example,dc=com'
+# LDAP_BIND_PASSWORD = 'ubuntu'
 
-AUTH_LDAP_SERVER_URI = LDAP_SERVER_URI
-AUTH_LDAP_BIND_DN = LDAP_BIND_DN
-AUTH_LDAP_BIND_PASSWORD = LDAP_BIND_PASSWORD
+# AUTH_LDAP_SERVER_URI = LDAP_SERVER_URI
+# AUTH_LDAP_BIND_DN = LDAP_BIND_DN
+# AUTH_LDAP_BIND_PASSWORD = LDAP_BIND_PASSWORD
 
-# User search
-AUTH_LDAP_USER_SEARCH = LDAPSearch(
-    "ou=users,dc=example,dc=com",
-    ldap.SCOPE_SUBTREE,
-    "(mail=%(user)s)"  # Adjusted search filter
-)
+# # User search
+# AUTH_LDAP_USER_SEARCH = LDAPSearch(
+#     "ou=users,dc=example,dc=com",
+#     ldap.SCOPE_SUBTREE,
+#     "(mail=%(user)s)"  # Adjusted search filter
+# )
 
-AUTH_LDAP_BIND_AS_AUTHENTICATING_USER = True
+# AUTH_LDAP_BIND_AS_AUTHENTICATING_USER = True
 
-# Group search
-AUTH_LDAP_GROUP_SEARCH = LDAPSearch(
-    "ou=groups,dc=example,dc=com",
-    ldap.SCOPE_SUBTREE,
-    "(objectClass=groupOfNames)"
-)
-AUTH_LDAP_GROUP_TYPE = GroupOfNamesType()
+# # Group search
+# AUTH_LDAP_GROUP_SEARCH = LDAPSearch(
+#     "ou=groups,dc=example,dc=com",
+#     ldap.SCOPE_SUBTREE,
+#     "(objectClass=groupOfNames)"
+# )
+# AUTH_LDAP_GROUP_TYPE = GroupOfNamesType()
 
-# Populate the Django user from the LDAP directory
-AUTH_LDAP_USER_ATTR_MAP = {
-    "first_name": "givenName",
-    "last_name": "sn",
-    "email": "mail"
-}
+# # Populate the Django user from the LDAP directory
+# AUTH_LDAP_USER_ATTR_MAP = {
+#     "first_name": "givenName",
+#     "last_name": "sn",
+#     "email": "mail"
+# }
 
-# Populate Django groups based on LDAP groups
-AUTH_LDAP_FIND_GROUP_PERMS = True
-AUTH_LDAP_MIRROR_GROUPS = True
+# # Populate Django groups based on LDAP groups
+# AUTH_LDAP_FIND_GROUP_PERMS = True
+# AUTH_LDAP_MIRROR_GROUPS = True
 
-# Cache groups for 1 hour to reduce LDAP traffic
-AUTH_LDAP_CACHE_GROUPS = True
-AUTH_LDAP_GROUP_CACHE_TIMEOUT = 3600
+# # Cache groups for 1 hour to reduce LDAP traffic
+# AUTH_LDAP_CACHE_GROUPS = True
+# AUTH_LDAP_GROUP_CACHE_TIMEOUT = 3600
 
-# Authentication backends
-AUTHENTICATION_BACKENDS = [
-    'django_auth_ldap.backend.LDAPBackend',
-    'django.contrib.auth.backends.ModelBackend',
-]
+# # Authentication backends
+# AUTHENTICATION_BACKENDS = [
+#     'django_auth_ldap.backend.LDAPBackend',
+#     'django.contrib.auth.backends.ModelBackend',
+# ]
 
-# Optional: Logging for debugging LDAP issues
-import logging
-logger = logging.getLogger('django_auth_ldap')
-logger.addHandler(logging.StreamHandler())
-logger.setLevel(logging.DEBUG)
+# # Optional: Logging for debugging LDAP issues
+# import logging
+# logger = logging.getLogger('django_auth_ldap')
+# logger.addHandler(logging.StreamHandler())
+# logger.setLevel(logging.DEBUG)
 
 # Configure logging
 LOGGING = {
@@ -242,52 +242,52 @@ LOGGING = {
     },
 }
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'json': {
-            '()': 'pythonjsonlogger.jsonlogger.JsonFormatter',
-            'format': '%(asctime)s %(levelname)s %(name)s %(message)s %(pathname)s %(lineno)d %(funcName)s %(request)s %(status_code)s',
-        },
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {message}',
-            'style': '{',
-        },
-    },
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'json',
-        },
-        'file': {
-            'class': 'logging.FileHandler',
-            'filename': 'django.log',
-            'formatter': 'verbose',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console', 'file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-        'django.request': {
-            'handlers': ['console', 'file'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'django.db.backends': {
-            'handlers': ['console', 'file'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-    },
-    'root': {
-        'handlers': ['console', 'file'],
-        'level': 'DEBUG',
-    },
-}
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'formatters': {
+#         'json': {
+#             '()': 'pythonjsonlogger.jsonlogger.JsonFormatter',
+#             'format': '%(asctime)s %(levelname)s %(name)s %(message)s %(pathname)s %(lineno)d %(funcName)s %(request)s %(status_code)s',
+#         },
+#         'verbose': {
+#             'format': '{levelname} {asctime} {module} {message}',
+#             'style': '{',
+#         },
+#     },
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'json',
+#         },
+#         'file': {
+#             'class': 'logging.FileHandler',
+#             'filename': 'django.log',
+#             'formatter': 'verbose',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console', 'file'],
+#             'level': 'DEBUG',
+#             'propagate': True,
+#         },
+#         'django.request': {
+#             'handlers': ['console', 'file'],
+#             'level': 'DEBUG',
+#             'propagate': False,
+#         },
+#         'django.db.backends': {
+#             'handlers': ['console', 'file'],
+#             'level': 'DEBUG',
+#             'propagate': False,
+#         },
+#     },
+#     'root': {
+#         'handlers': ['console', 'file'],
+#         'level': 'DEBUG',
+#     },
+# }
 
 # amadeus
 AMADEUS_API_KEY = 'VXc7ujBFQYmEOVLgZj14oSJKAvyaAJAd'
