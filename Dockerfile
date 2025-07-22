@@ -17,10 +17,8 @@ WORKDIR /app/backend
 COPY requirements.txt .
 
 # Upgrade pip to the latest version
-RUN pip install --upgrade pip
-
-# Install dependencies directly into the system Python environment
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt
 
 # Copy the entire application code to the container
 COPY . .
