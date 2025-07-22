@@ -1,9 +1,10 @@
 pipeline {
-    agent {
-        kubernetes {
-            yamlFile 'kaniko-builder.yaml'
-        }
-    }
+    agent any
+    // agent {
+    //     kubernetes {
+    //         yamlFile 'kaniko-builder.yaml'
+    //     }
+    // }
 
     environment {
         DOCKER_IMAGE = 'index.docker.io/nhqb3197/nhqb-mysite:latest'
