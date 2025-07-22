@@ -10,7 +10,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: jenkins
-  namespace: devops-tools
+  namespace: jenkins
   annotations:
     kubernetes.io/ingress.class: ngrok
 spec:
