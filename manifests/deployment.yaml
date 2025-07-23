@@ -19,12 +19,12 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
-        env:
-        - name: LDAP_SERVER_URI
-          value: "ldap://10.10.100.95:389"
-        - name: LDAP_BIND_DN
-          value: "cn=admin,dc=example,dc=com"
-        - name: LDAP_BIND_PASSWORD
-          value: "ubuntu"
+        # env:
+        # - name: LDAP_SERVER_URI
+        #   value: "ldap://10.10.100.95:389"
+        # - name: LDAP_BIND_DN
+        #   value: "cn=admin,dc=example,dc=com"
+        # - name: LDAP_BIND_PASSWORD
+        #   value: "ubuntu"
       imagePullSecrets:
       - name: dockerhub-creds

@@ -5,8 +5,11 @@ microk8s kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{
 ```
 
 ## --- Create the service --- ##
+# apply the argocd-mediago-webapp.yaml to create the service
 
-apply the argocd-mediago-webapp.yaml to create the service
+```bash
+microk8s kubectl apply -f argocd-mediago-webapp.yaml
+```
 
 ## --- Create the ingress --- ##
 
