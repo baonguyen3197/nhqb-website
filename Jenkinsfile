@@ -51,18 +51,18 @@ pipeline {
         //     }
         // }
 
-        tage('Trigger ArgoCD Sync') {
-    steps {
-        withCredentials([string(credentialsId: 'argocd-cred', variable: 'ARGOCD_AUTH_TOKEN')]) {
-            sh '''
-            curl -s -X POST \
-              -H "Content-Type: application/json" \
-              -H "Authorization: Bearer ${ARGOCD_AUTH_TOKEN}" \
-              -d '{"syncOptions": ["Force=true", "Replace=true"]}' \
-              https://argocd.local/api/v1/applications/mediago-webapp/sync
-            '''
+        stage('Trigger ArgoCD Sync') {
+            steps {
+                withCredentials([string(credentialsId: 'argocd-cred', variable: 'ARGOCD_AUTH_TOKEN')]) {
+                    sh '''
+                    curl -s -X POST \
+                    -H "Content-Type: application/json" \
+                    -H "Authorization: Bearer ${ARGOCD_AUTH_TOKEN}" \
+                    -d '{"syncOptions": ["Force=true", "Replace=true"]}' \
+                    https://argocd.local/api/v1/applications/mediago-webapp/sync
+                    '''
+                }
+            }
         }
-    }
-}
     }
 }
