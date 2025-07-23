@@ -58,7 +58,7 @@ pipeline {
                     curl -s -X POST \
                     -H "Content-Type: application/json" \
                     -H "Authorization: Bearer ${ARGOCD_AUTH_TOKEN}" \
-                    https://argocd.local/api/v1/applications/mediago-webapp/sync
+                    ${ARGOCD_SERVER}/api/v1/applications/${ARGOCD_APP_NAME}/sync
                     '''
                 }
             }
