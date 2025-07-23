@@ -11,7 +11,7 @@ pipeline {
         GITHUB_CREDENTIALS_ID = 'nhqb-website'
         DOCKER_CREDENTIALS_ID = 'dockerhub-creds'
         // ARGOCD_SERVER = '10.10.100.90:32007'
-        ARGOCD_SERVER = 'https://argocd.local/'
+        ARGOCD_SERVER = 'http://argo-cd-argocd-server.argocd.svc.cluster.local'  // Use internal service
         ARGOCD_APP_NAME = 'app-web'
         ARGOCD_AUTH_TOKEN = credentials('argocd-cred')
     }
