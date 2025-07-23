@@ -3,7 +3,7 @@ microk8s kubectl create secret docker-registry regcred \
     --docker-server=https://index.docker.io/v1/ \
     --docker-username={username} \
     --docker-password={password} \
-    --docker-email={email}
+    --docker-email={email} \
     -n jenkins
 
 ## --- kaniko --- ##
