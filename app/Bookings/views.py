@@ -9,7 +9,7 @@ import json
 import requests_cache
 import requests
 from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util.retry import Retry
+from urllib3.util.retry import Retry
 
 def hotel_list(request):
     query = request.GET.get('q')

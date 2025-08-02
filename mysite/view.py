@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth import logout
 import openmeteo_requests
 import json
 import pandas as pd
@@ -7,7 +8,7 @@ import requests
 from app.Bookings.models import Hotel
 from app.Airports.models import Airport
 from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util.retry import Retry
+from urllib3.util.retry import Retry
 from retry_requests import retry
 from datetime import datetime
 

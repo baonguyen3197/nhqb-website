@@ -108,7 +108,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'mediago',
         'HOST': '10.0.10.52',
-        'PORT': 32062,
+        'PORT': 30433,
         'USER': 'yugabyte',
         'CONN_MAX_AGE': None,
         'PASSWORD': 'yugabyte'
