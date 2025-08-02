@@ -27,4 +27,5 @@ spec:
         # - name: LDAP_BIND_PASSWORD
         #   value: "ubuntu"
       imagePullSecrets:
-      - name: dockerhub-creds
+      # - name: dockerhub-creds
+        - name: regcred
