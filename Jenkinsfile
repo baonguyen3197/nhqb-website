@@ -29,15 +29,15 @@ pipeline {
             }
         }
 
-        stage('Build & Push with Kaniko') {
-            steps {
-                container(name: 'kaniko', shell: '/busybox/sh') {
-                    sh '''#!/busybox/sh
-                    /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${DOCKER_IMAGE}
-                    '''
-                }
-            }
-        }
+        // stage('Build & Push with Kaniko') {
+        //     steps {
+        //         container(name: 'kaniko', shell: '/busybox/sh') {
+        //             sh '''#!/busybox/sh
+        //             /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${DOCKER_IMAGE}
+        //             '''
+        //         }
+        //     }
+        // }
         
         // stage('Build & Push Docker Image') {
         //     steps {
